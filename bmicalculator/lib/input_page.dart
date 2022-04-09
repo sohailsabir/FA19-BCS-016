@@ -19,22 +19,23 @@ class InputPage extends StatefulWidget {
 
 
 class _InputPageState extends State<InputPage> {
-  Color maleColor=deActiveColor;
-  Color feMaleColor=deActiveColor;
-  void selectGender(Gender gender)
-  {
-    if(gender==Gender.male)
-      {
-        maleColor=activeColor;
-        feMaleColor=deActiveColor;
-      }
-    if(gender==Gender.female)
-    {
-      maleColor=deActiveColor;
-      feMaleColor=activeColor;
-    }
-
-  }
+  Gender? selectGender;
+  // Color maleColor=deActiveColor;
+  // Color feMaleColor=deActiveColor;
+  // void selectGender(Gender gender)
+  // {
+  //   if(gender==Gender.male)
+  //     {
+  //       maleColor=activeColor;
+  //       feMaleColor=deActiveColor;
+  //     }
+  //   if(gender==Gender.female)
+  //   {
+  //     maleColor=deActiveColor;
+  //     feMaleColor=activeColor;
+  //   }
+  //
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -51,11 +52,11 @@ class _InputPageState extends State<InputPage> {
                   child: GestureDetector(
                   onTap: (){
                     setState(() {
-                      selectGender(Gender.male);
+                      selectGender=Gender.male;
                     });
                   },
                   child: RepeatContainer(
-                    colors: maleColor,
+                    colors: selectGender==Gender.male?activeColor:deActiveColor,
                     cardWidget: TextAndIcon(
                       icon: FontAwesomeIcons.person,
                       lable: 'Male',
@@ -67,11 +68,11 @@ class _InputPageState extends State<InputPage> {
                   onTap: (){
 
                     setState(() {
-                      selectGender(Gender.female);
+                      selectGender=Gender.female;
                     });
                   },
                   child: RepeatContainer(
-                    colors: feMaleColor,
+                    colors: selectGender==Gender.female?activeColor:deActiveColor,
                     cardWidget: TextAndIcon(
                       icon: FontAwesomeIcons.personDress,
                       lable: 'Female',
