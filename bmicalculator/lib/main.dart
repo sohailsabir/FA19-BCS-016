@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 void main(){
   runApp(BMICalculator());
 }
@@ -37,9 +38,17 @@ class _InputPageState extends State<InputPage> {
             children: [
               Expanded(child: RepeatContainer(
                 colors: Color(0xFF1D1E33),
+                cardWidget: TextAndIcon(
+                  icon: FontAwesomeIcons.person,
+                  lable: 'Male',
+                ),
               ),),
               Expanded(child: RepeatContainer(
                 colors: Color(0xFF1D1E33),
+                cardWidget: TextAndIcon(
+                  icon: FontAwesomeIcons.personDress,
+                  lable: 'Female',
+                ),
               ),),
             ],
           ),),
@@ -63,13 +72,40 @@ class _InputPageState extends State<InputPage> {
   }
 }
 
-class RepeatContainer extends StatelessWidget {
-  RepeatContainer({required this.colors});
-  final Color colors;
+class TextAndIcon extends StatelessWidget {
+  TextAndIcon({required this.icon,required this.lable});
+final IconData icon;
+final String lable;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+          Icon(
+            icon,
+            size: 40.0,
+          ),
+          SizedBox(
+            height: 13.0,
+          ),
+          Text(lable,
+            style: TextStyle(
+            color: Color(0xFF8D8E98),
+            fontSize: 18,
+          ),)
+      ],
+    );
+  }
+}
 
+class RepeatContainer extends StatelessWidget {
+  RepeatContainer({required this.colors,this.cardWidget});
+  final Color colors;
+  final Widget? cardWidget;
   @override
   Widget build(BuildContext context) {
     return Container(
+      child: cardWidget,
       margin: EdgeInsets.all(10.0),
       decoration: BoxDecoration(
         color: colors,
