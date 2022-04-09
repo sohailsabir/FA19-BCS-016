@@ -1,5 +1,6 @@
 
 
+import 'package:bmicalculator/contants/contantsfile.dart';
 import 'package:flutter/material.dart';
 
 class TextAndIcon extends StatelessWidget {
@@ -19,10 +20,7 @@ class TextAndIcon extends StatelessWidget {
           height: 13.0,
         ),
         Text(lable,
-          style: TextStyle(
-            color: Color(0xFF8D8E98),
-            fontSize: 18,
-          ),)
+          style: kLableStyle,)
       ],
     );
   }

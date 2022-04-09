@@ -1,10 +1,11 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'components/repeat_container.dart';
 import 'components/text_and_Icon.dart';
-const activeColor=Color(0xFF1D1E33);
-const deActiveColor=Color(0xFF111328);
+import 'contants/contantsfile.dart';
+
 enum Gender{
   male,
   female,
@@ -44,6 +45,7 @@ class _InputPageState extends State<InputPage> {
           title: Text('BMI Calculator'),
         ),
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
               child: Row(
@@ -81,6 +83,13 @@ class _InputPageState extends State<InputPage> {
             Expanded(
               child: RepeatContainer(
               colors: Color(0xFF1D1E33),
+                cardWidget: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("HEIGHT",
+                    style: kLableStyle,)
+                  ],
+                ),
             ),),
             Expanded(
               child: Row(
