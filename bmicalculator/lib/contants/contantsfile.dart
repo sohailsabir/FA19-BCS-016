@@ -10,3 +10,8 @@ const kNumStyle=TextStyle(
 fontSize: 30.0,
 fontWeight: FontWeight.w900,
 );
+const kLargeButtonStyle=TextStyle(
+  color: Colors.white,
+  fontSize: 25.0,
+  fontWeight: FontWeight.w600,
+);
