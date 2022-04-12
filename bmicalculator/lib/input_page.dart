@@ -6,6 +6,8 @@ import 'components/repeat_container.dart';
 import 'components/text_and_Icon.dart';
 import 'contants/contantsfile.dart';
 int sliderHeight=180;
+int weight=60;
+int age=20;
 
 enum Gender{
   male,
@@ -117,17 +119,110 @@ class _InputPageState extends State<InputPage> {
               children: [
                 Expanded(
                   child: RepeatContainer(
-                  colors: Color(0xFF1D1E33),
+                    colors: Color(0xFF1D1E33),
+                    cardWidget: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("WEIGHT",
+                          style: kLableStyle,),
+                        Text(
+                          weight.toString(),
+                          style: kNumStyle,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            RoundButton(
+                                icon: FontAwesomeIcons.minus,
+                                onPressed: (){
+                                  setState(() {
+                                    weight--;
+                                  });
+                                }),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            RoundButton(
+                                icon: FontAwesomeIcons.plus,
+                                onPressed: (){
+                                  setState(() {
+                                    weight++;
+                                  });
+                                }),
+
+                          ],
+                        ),
+                      ],
+                    ),
+
                 ),),
                 Expanded(
                   child:RepeatContainer(
                   colors: Color(0xFF1D1E33),
+                    cardWidget: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("AGE",
+                          style: kLableStyle,),
+                        Text(
+                          age.toString(),
+                          style: kNumStyle,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            RoundButton(
+                                icon: FontAwesomeIcons.minus,
+                                onPressed: (){
+                                  setState(() {
+                                    age--;
+                                  });
+                                }),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            RoundButton(
+                                icon: FontAwesomeIcons.plus,
+                                onPressed: (){
+                                  setState(() {
+                                    age++;
+                                  });
+                                }),
+
+                          ],
+                        ),
+                      ],
+                    ),
                 ),),
               ],
             ),),
+            Container(
+              color: Color(0xFF41855A),
+              margin: EdgeInsets.only(top: 10.0),
+              width: double.infinity,
+              height: 70.0,
+            ),
 
           ],
         )
+    );
+  }
+}
+class RoundButton extends StatelessWidget {
+  RoundButton({required this.icon,required this.onPressed});
+final IconData icon;
+final VoidCallback onPressed;
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(onPressed: onPressed,
+    child: Icon(icon),
+    constraints: BoxConstraints.tightFor(
+      height: 46.0,
+      width: 46.0,
+    ),
+      shape: CircleBorder(),
+      fillColor: Color(0xFF4C4F5E),
+
     );
   }
 }
