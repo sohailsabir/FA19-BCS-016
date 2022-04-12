@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'components/repeat_container.dart';
 import 'components/text_and_Icon.dart';
 import 'contants/contantsfile.dart';
+int sliderHeight=180;
 
 enum Gender{
   male,
@@ -87,17 +88,39 @@ class _InputPageState extends State<InputPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text("HEIGHT",
-                    style: kLableStyle,)
+                    style: kLableStyle,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(sliderHeight.toString(),
+                          style:kNumStyle,
+                          ),
+                        Text(
+                          "cm",style: kLableStyle,)
+                      ],
+                    ),
+                    Slider(
+                      max: 220.0,
+                        min: 120,
+                        activeColor: Color(0xFF41855A),
+                        inactiveColor: Color(0xFF8D8E98),
+                        value: sliderHeight.toDouble(), onChanged: (double newVlaue){
+                      setState(() {
+                        sliderHeight=newVlaue.round();
+                      });
+                    })
                   ],
                 ),
             ),),
             Expanded(
               child: Row(
               children: [
-                Expanded(child: RepeatContainer(
+                Expanded(
+                  child: RepeatContainer(
                   colors: Color(0xFF1D1E33),
                 ),),
-                Expanded(child:RepeatContainer(
+                Expanded(
+                  child:RepeatContainer(
                   colors: Color(0xFF1D1E33),
                 ),),
               ],

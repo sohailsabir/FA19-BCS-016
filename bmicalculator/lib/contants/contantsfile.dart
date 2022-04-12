@@ -6,3 +6,7 @@ fontSize: 18,
 );
 const activeColor=Color(0xFF1D1E33);
 const deActiveColor=Color(0xFF111328);
+const kNumStyle=TextStyle(
+fontSize: 30.0,
+fontWeight: FontWeight.w900,
+);
