@@ -15,3 +15,19 @@ const kLargeButtonStyle=TextStyle(
   fontSize: 25.0,
   fontWeight: FontWeight.w600,
 );
+const kTitleS2=TextStyle(
+  fontWeight: FontWeight.w900,
+  fontSize: 50.0,
+);
+const kResultStyle=TextStyle(
+  fontSize: 20.0,
+  fontWeight: FontWeight.w500,
+  color: Color(0xFF41855A),
+);
+const kNumS2=TextStyle(
+  fontWeight: FontWeight.bold,
+  fontSize: 50.0,
+);
+const kTextStyleS2=TextStyle(
+  fontSize: 20.0,
+);

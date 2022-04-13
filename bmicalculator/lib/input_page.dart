@@ -3,6 +3,7 @@ import 'package:bmicalculator/resultScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'components/roundButton.dart';
 import 'components/repeat_container.dart';
 import 'components/text_and_Icon.dart';
 import 'contants/contantsfile.dart';
@@ -217,21 +218,4 @@ class _InputPageState extends State<InputPage> {
     );
   }
 }
-class RoundButton extends StatelessWidget {
-  RoundButton({required this.icon,required this.onPressed});
-final IconData icon;
-final VoidCallback onPressed;
-  @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(onPressed: onPressed,
-    child: Icon(icon),
-    constraints: BoxConstraints.tightFor(
-      height: 46.0,
-      width: 46.0,
-    ),
-      shape: CircleBorder(),
-      fillColor: Color(0xFF4C4F5E),
 
-    );
-  }
-}
