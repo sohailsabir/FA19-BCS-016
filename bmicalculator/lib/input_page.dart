@@ -1,7 +1,9 @@
 
+import 'package:bmicalculator/Brain/calculator.dart';
 import 'package:bmicalculator/resultScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'components/roundButton.dart';
 import 'components/repeat_container.dart';
@@ -25,6 +27,7 @@ class InputPage extends StatefulWidget {
 
 
 class _InputPageState extends State<InputPage> {
+
   Gender? selectGender;
   // Color maleColor=deActiveColor;
   // Color feMaleColor=deActiveColor;
@@ -48,6 +51,15 @@ class _InputPageState extends State<InputPage> {
     return Scaffold(
         appBar: AppBar(
           title: Text('BMI Calculator'),
+
+          actions: [
+
+          SpinKitSpinningLines(
+          color: Color(0xFF41855A),
+          size: 50.0,
+        ),
+          ],
+
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -200,7 +212,8 @@ class _InputPageState extends State<InputPage> {
             ),),
             GestureDetector(
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>ResultScreen()));
+                BMICalculator bmi=BMICalculator(height: sliderHeight, weight: weight);
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ResultScreen(BMINum: bmi.CalculateBMI(),BMIText: bmi.GetResultText(),Interpretation: bmi.getInterpretation()),),);
               },
               child: Container(
                 child: Center(

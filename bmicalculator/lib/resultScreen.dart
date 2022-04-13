@@ -2,8 +2,10 @@ import 'package:bmicalculator/components/repeat_container.dart';
 import 'package:bmicalculator/contants/contantsfile.dart';
 import 'package:flutter/material.dart';
 class ResultScreen extends StatelessWidget {
-  const ResultScreen({Key? key}) : super(key: key);
-
+  ResultScreen({this.BMINum,this.BMIText,this.Interpretation});
+final String? BMIText;
+final String? BMINum;
+final String? Interpretation;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,12 +28,13 @@ class ResultScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text("Normal",
+                  Text(BMIText!,
                   style: kResultStyle,),
-                  Text('18.0',
+                  Text(BMINum!,
                   style: kNumS2,),
-                  Text("This is the Interpretation of BMI Calculator",
-                  style: kTextStyleS2,),
+                  Text(Interpretation!,
+                  style: kTextStyleS2,
+                  textAlign: TextAlign.center,),
                 ],
               ),
           ),),
@@ -48,7 +51,7 @@ class ResultScreen extends StatelessWidget {
               width: double.infinity,
               height: 70.0,
             ),
-          ),)
+          ),),
 
         ],
       ),

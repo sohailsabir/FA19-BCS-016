@@ -30,4 +30,5 @@ const kNumS2=TextStyle(
 );
 const kTextStyleS2=TextStyle(
   fontSize: 20.0,
+
 );
