@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weatherapp/Utility/util.dart' as util;
 import 'package:http/http.dart' as http;
@@ -55,8 +56,8 @@ class _ClimateState extends State<Climate> {
           Container(
             margin: EdgeInsets.fromLTRB(30.0, 150.0, 0.0, 0.0),
             alignment: Alignment.centerLeft,
-            child: Text("67.8F",style: kTemStyle,),
-          )
+            child: UpdateScreenData('vehari'),
+          ),
         ],
       ),
     );
@@ -66,6 +67,31 @@ class _ClimateState extends State<Climate> {
     http.Response response=await http.get(Uri.parse(apiUrl));
     return json.decode(response.body);
   }
+Widget UpdateScreenData(String city){
+    return FutureBuilder(
+        future: getWeather(util.apiId, city==null?util.defaultCity:city),
+        builder: (BuildContext context,AsyncSnapshot<Map> snapshot) {
+          if(snapshot.hasData)
+            {
+              Map? content=snapshot.data;
+              return Container(
+                margin: EdgeInsets.fromLTRB(10.0, 200.0, 0.0, 0.0),
+                child: Column(
+                  children: [
+                    ListTile(
+                      title: Text(content!['main']['temp'].toString(),style: kTemStyle,),
+                    )
+                  ],
+                ),
+              );
+            }
+          else{
+            return Container();
+          }
+
+    }
+    );
+}
 }
 const kCityStyle=TextStyle(
   fontSize: 25.0,
