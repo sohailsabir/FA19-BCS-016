@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:weatherapp/UI/searchScreen.dart';
 import 'package:weatherapp/Utility/util.dart' as util;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -24,10 +25,12 @@ class _ClimateState extends State<Climate> {
         centerTitle: true,
         actions: [
           IconButton(onPressed: (){
-            ShowData();
-          }, icon: Icon(
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>SearchPage()));
+          },
+            icon: Icon(
             Icons.search,
-          ))
+          ),
+          ),
         ],
       ),
       body: Stack(
