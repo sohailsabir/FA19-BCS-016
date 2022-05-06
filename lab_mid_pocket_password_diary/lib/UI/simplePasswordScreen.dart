@@ -96,7 +96,7 @@ class _SimplePasswordScreenState extends State<SimplePasswordScreen> {
                   onPressed: check==false?null:()async{
                     await FirebaseFirestore.instance.collection("PasswordBD").add({
                       'password':GeneratePassword.text,
-                      'name':'weak',
+                      'name':'Weak Password',
                     }).then((value) {
                       print(value.id);
                     }).catchError((error){

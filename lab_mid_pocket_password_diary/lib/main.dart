@@ -19,7 +19,7 @@ class PasswordApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Pocket Password App",
-      home: ToughPasswordScreen(),
+      home: DashBoard(),
     );
   }
 }
@@ -52,7 +52,9 @@ class DashBoard extends StatelessWidget {
               ),
               OptionButton(
                 text: "Create Tough Password",
-                onpressed: (){},
+                onpressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>ToughPasswordScreen()));
+                },
               ),
               SizedBox(
                 height: 10.0,

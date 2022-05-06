@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ToughPasswordScreen extends StatefulWidget {
@@ -167,7 +168,16 @@ class _ToughPasswordScreenState extends State<ToughPasswordScreen> {
                   width: 10.0,
                 ),
                 ElevatedButton(
-                  onPressed: check==false?null:(){},
+                  onPressed: check==false?null:()async{
+                    await FirebaseFirestore.instance.collection("PasswordBD").add({
+                      'password':password.text,
+                      'name':'Tough Password',
+                    }).then((value) {
+                      print(value.id);
+                    }).catchError((error){
+                      print(error);
+                    });
+                  },
                   child: Text("Save Password"),
                   style: ElevatedButton.styleFrom(
                     primary: Colors.pink,
