@@ -18,7 +18,7 @@ class PasswordApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Pocket Password App",
-      home: ViewPasswordScreen(),
+      home: DashBoard(),
     );
   }
 }
@@ -42,7 +42,9 @@ class DashBoard extends StatelessWidget {
             children: [
               OptionButton(
                 text: "Create Simple Password",
-                onpressed: (){},
+                onpressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>SimplePasswordScreen()));
+                },
               ),
               SizedBox(
                 height: 10.0,
@@ -56,7 +58,9 @@ class DashBoard extends StatelessWidget {
               ),
               OptionButton(
                 text: "Show All Password",
-                onpressed: (){},
+                onpressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>ViewPasswordScreen()));
+                },
               ),
 
             ],
