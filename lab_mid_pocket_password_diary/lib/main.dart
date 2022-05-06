@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lab_mid_pocket_password_diary/UI/ToughPasswordScreen.dart';
 import 'package:lab_mid_pocket_password_diary/UI/ViewPassword.dart';
 import 'package:lab_mid_pocket_password_diary/UI/simplePasswordScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,7 +19,7 @@ class PasswordApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Pocket Password App",
-      home: DashBoard(),
+      home: ToughPasswordScreen(),
     );
   }
 }
