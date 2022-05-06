@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:lab_mid_pocket_password_diary/UI/ViewPassword.dart';
 import 'package:lab_mid_pocket_password_diary/UI/simplePasswordScreen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(PasswordApp());
 }
 class PasswordApp extends StatelessWidget {

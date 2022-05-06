@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class SimplePasswordScreen extends StatefulWidget {
   const SimplePasswordScreen({Key? key}) : super(key: key);
@@ -91,7 +93,16 @@ class _SimplePasswordScreenState extends State<SimplePasswordScreen> {
                   width: 10.0,
                 ),
                 ElevatedButton(
-                  onPressed: check==false?null:(){},
+                  onPressed: check==false?null:()async{
+                    await FirebaseFirestore.instance.collection("PasswordBD").add({
+                      'password':GeneratePassword.text,
+                      'name':'weak',
+                    }).then((value) {
+                      print(value.id);
+                    }).catchError((error){
+                      print(error);
+                    });
+                  },
                   child: Text("Save Password"),
                   style: ElevatedButton.styleFrom(
                     primary: Colors.pink,
