@@ -149,14 +149,25 @@ class _ToughPasswordScreenState extends State<ToughPasswordScreen> {
                 ElevatedButton(
                   onPressed: (){
                     setState(() {
-                      check=true;
+
+                      if(psymlen.text.isNotEmpty&&pdigitlen.text.isNotEmpty&&pcharlen.text.isNotEmpty&&plen.text.isNotEmpty)
+                        {
+                          int length=int.parse(plen.text);
+                          int chlen=int.parse(pcharlen.text);
+                          int symlen=int.parse(psymlen.text);
+                          int diglen=int.parse(pdigitlen.text);
+                          final pass=passworda(length,chlen,symlen,diglen);
+                          password.text=pass;
+                          check=true;
+                        }
+                      else{
+                        const snackBar = SnackBar(
+                          content: Text('Please Fill All Feild'),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      }
                     });
-                    int length=int.parse(plen.text);
-                    int chlen=int.parse(pcharlen.text);
-                    int symlen=int.parse(psymlen.text);
-                    int diglen=int.parse(pdigitlen.text);
-                    final pass=passworda(length,chlen,symlen,diglen);
-                    password.text=pass;
+
 
                   },
                   child: Text("Create Password"),
@@ -174,6 +185,13 @@ class _ToughPasswordScreenState extends State<ToughPasswordScreen> {
                       'name':'Tough Password',
                     }).then((value) {
                       print(value.id);
+                      setState(() {
+                        check=false;
+                        const snackBar = SnackBar(
+                          content: Text('Data Save Successfully'),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      });
                     }).catchError((error){
                       print(error);
                     });

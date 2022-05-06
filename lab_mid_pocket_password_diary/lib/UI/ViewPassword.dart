@@ -22,76 +22,13 @@ class _ViewPasswordScreenState extends State<ViewPasswordScreen> {
       body: StreamBuilder(
         stream: firebaseDB,
         builder: (context,AsyncSnapshot snapshot){
-          if(!snapshot.hasData)return CircularProgressIndicator();
+          if(!snapshot.hasData)return Center(child: CircularProgressIndicator());
           return ListView.builder(
             itemCount: snapshot.data.docs.length,
               itemBuilder: (context, int index)
           {
             return CustomCard(snapshot: snapshot.data, index: index);
-            // return Card(
-            //       elevation: 6.0,
-            //       child: Column(
-            //         children: [
-            //           ListTile(
-            //             leading: CircleAvatar(
-            //               backgroundColor: Colors.pink.shade300,
-            //               radius: 25.0,
-            //               child: Text("${snapshot.data.docs[index]['name'][0]}"),
-            //             ),
-            //             title: Text("${snapshot.data.docs[index]['name']}",style: TextStyle(
-            //               fontWeight: FontWeight.w500
-            //             ),),
-            //             subtitle: Text("${snapshot.data.docs[index]['password']}"),
-            //           ),
-            //           Row(
-            //             mainAxisAlignment: MainAxisAlignment.end,
-            //             children: [
-            //               IconButton(
-            //                 onPressed: ()async{
-            //                 await showDialog(
-            //                   context: context,
-            //                   builder: (BuildContext context) {
-            //                     return AlertDialog(
-            //                       title: Text('Update Password'),
-            //                       content: TextField(
-            //                         //controller: pass,
-            //                         decoration: InputDecoration(
-            //                             icon: Icon(
-            //                               Icons.password,
-            //                               color: Colors.pink,
-            //                             )
-            //                         ),
-            //                       ),
-            //                       actions: [
-            //                         TextButton(
-            //                           onPressed: () {
-            //                             Navigator.of(context).pop();
-            //                           },
-            //                           child: Text('Update', style: TextStyle(color: Colors.pink),),
-            //                         ),
-            //                         TextButton(
-            //                           onPressed: () {
-            //                             Navigator.of(context).pop();
-            //                           },
-            //                           child: Text('Cancel', style: TextStyle(color: Colors.pink),),
-            //                         ),
-            //                       ],
-            //                     );
-            //                   },
-            //                 );
-            //               }, icon: Icon(
-            //                 Icons.edit,
-            //                 color: Colors.pink,
-            //               ),),
-            //               IconButton(onPressed: (){}, icon: Icon(
-            //                 Icons.delete,
-            //                 color: Colors.pink,
-            //               ),),
-            //             ],
-            //           )
-            //         ],
-            //       ),
-            //     );
+
           });
         },
       ),

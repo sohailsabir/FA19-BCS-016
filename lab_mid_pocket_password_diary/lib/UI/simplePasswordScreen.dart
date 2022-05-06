@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 class SimplePasswordScreen extends StatefulWidget {
   const SimplePasswordScreen({Key? key}) : super(key: key);
@@ -53,7 +52,7 @@ class _SimplePasswordScreenState extends State<SimplePasswordScreen> {
         child: Column(
           children: [
             TextField(
-              obscureText: true,
+
               controller: GeneratePassword,
               readOnly: true,
               autofocus: true,
@@ -99,6 +98,14 @@ class _SimplePasswordScreenState extends State<SimplePasswordScreen> {
                       'name':'Weak Password',
                     }).then((value) {
                       print(value.id);
+                      setState(() {
+                        check=false;
+                        const snackBar = SnackBar(
+                          content: Text('Data Save Successfully'),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      });
+
                     }).catchError((error){
                       print(error);
                     });

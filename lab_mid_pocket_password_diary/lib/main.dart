@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lab_mid_pocket_password_diary/UI/ToughPasswordScreen.dart';
 import 'package:lab_mid_pocket_password_diary/UI/ViewPassword.dart';
+import 'package:lab_mid_pocket_password_diary/UI/aboutpage.dart';
 import 'package:lab_mid_pocket_password_diary/UI/simplePasswordScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -33,7 +34,54 @@ class DashBoard extends StatelessWidget {
         title: Text("Pocket Password App"),
         backgroundColor: Colors.pink,
       ),
+      drawer: Drawer(
+        backgroundColor: Colors.white,
+        child: ListView(
+          children: [
+            DrawerHeader(
+              child: Center(
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 50.0,
+                      backgroundColor: Colors.pink,
+                      backgroundImage: AssetImage('assets/images.png'),
+                    ),
+                    Text(
+                      "Pocket Password",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 25.0,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              decoration: BoxDecoration(
+                color: Colors.pink.shade300,
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.home_filled),
+              title: Text("Home"),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.info),
+              title: Text("About"),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>Aboutpage(),),);
+              },
+            ),
+
+          ],
+        ),
+      ),
       body: SafeArea(
+
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
