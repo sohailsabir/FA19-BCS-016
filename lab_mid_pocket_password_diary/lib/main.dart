@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lab_mid_pocket_password_diary/UI/simplePasswordScreen.dart';
 
 void main() {
   runApp(PasswordApp());
@@ -11,7 +12,7 @@ class PasswordApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Pocket Password App",
-      home: DashBoard(),
+      home: SimplePasswordScreen(),
     );
   }
 }
