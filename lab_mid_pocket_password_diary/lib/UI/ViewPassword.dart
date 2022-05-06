@@ -27,10 +27,42 @@ class _ViewPasswordScreenState extends State<ViewPasswordScreen> {
             itemCount: snapshot.data.docs.length,
               itemBuilder: (context, int index)
           {
-                return Text(snapshot.data.docs[index]['password']);
+                return Card(
+                  elevation: 6.0,
+                  child: Column(
+                    children: [
+                      ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.pink.shade300,
+                          radius: 25.0,
+                          child: Text("${snapshot.data.docs[index]['name'][0]}"),
+                        ),
+                        title: Text("${snapshot.data.docs[index]['name']}",style: TextStyle(
+                          fontWeight: FontWeight.w500
+                        ),),
+                        subtitle: Text("${snapshot.data.docs[index]['password']}"),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(onPressed: (){}, icon: Icon(
+                            Icons.edit,
+                            color: Colors.pink,
+                          ),),
+                          IconButton(onPressed: (){}, icon: Icon(
+                            Icons.delete,
+                            color: Colors.pink,
+                          ),),
+                        ],
+                      )
+                    ],
+                  ),
+                );
           });
         },
       ),
       );
   }
 }
+
+

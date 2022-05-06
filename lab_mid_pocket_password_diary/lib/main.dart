@@ -18,7 +18,7 @@ class PasswordApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Pocket Password App",
-      home: SimplePasswordScreen(),
+      home: ViewPasswordScreen(),
     );
   }
 }

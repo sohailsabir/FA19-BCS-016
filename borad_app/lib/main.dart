@@ -98,7 +98,7 @@ body: StreamBuilder(
           des.clear();
           Navigator.pop(context);
 
-        }).catchError((error)=>print(error));
+        }).catc(hError((error)=>print(error));
         }, child: Text("Save")),
       ],
     ));
