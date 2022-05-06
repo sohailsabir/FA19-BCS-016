@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class ToughPasswordScreen extends StatefulWidget {
@@ -8,6 +10,30 @@ class ToughPasswordScreen extends StatefulWidget {
 }
 
 class _ToughPasswordScreenState extends State<ToughPasswordScreen> {
+  TextEditingController plen=new TextEditingController();
+  TextEditingController pcharlen=new TextEditingController();
+  TextEditingController psymlen=new TextEditingController();
+  TextEditingController pdigitlen=new TextEditingController();
+  TextEditingController password=new TextEditingController();
+  String passworda(int length,int charlen,int symlen,int digitlen)
+  {
+    int total=charlen+symlen+digitlen;
+    const characters = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz';
+    Random random = Random();
+    String a= String.fromCharCodes(Iterable.generate(charlen, (_) => characters.codeUnitAt(random.nextInt(characters.length))));
+    const number = '0123456789';
+    String b= String.fromCharCodes(Iterable.generate(digitlen, (_) => number.codeUnitAt(random.nextInt(number.length))));
+    const symbol="!@#%^&*()?><~";
+    String c= String.fromCharCodes(Iterable.generate(symlen, (_) => symbol.codeUnitAt(random.nextInt(symbol.length))));
+    String d= a+b+c;
+    List list = d.split('');
+
+    list.shuffle();
+    String shuffled = list.join();
+
+    return shuffled;
+  }
+
   bool check=false;
   @override
   Widget build(BuildContext context) {
@@ -22,6 +48,7 @@ class _ToughPasswordScreenState extends State<ToughPasswordScreen> {
         child: Column(
           children: [
             TextField(
+              controller: plen,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 labelText: "Length of Password",
@@ -40,6 +67,7 @@ class _ToughPasswordScreenState extends State<ToughPasswordScreen> {
               height: 15.0,
             ),
             TextField(
+              controller: pcharlen,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 labelText: "Characters in the Password",
@@ -58,6 +86,7 @@ class _ToughPasswordScreenState extends State<ToughPasswordScreen> {
               height: 15.0,
             ),
             TextField(
+              controller: psymlen,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 labelText: "Symbol in the Password",
@@ -76,6 +105,7 @@ class _ToughPasswordScreenState extends State<ToughPasswordScreen> {
               height: 15.0,
             ),
             TextField(
+              controller: pdigitlen,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 labelText: "Digit in the Password",
@@ -94,6 +124,7 @@ class _ToughPasswordScreenState extends State<ToughPasswordScreen> {
               height: 15.0,
             ),
             TextField(
+              controller: password,
               readOnly: true,
               decoration: InputDecoration(
                   focusedBorder:OutlineInputBorder(
@@ -119,7 +150,12 @@ class _ToughPasswordScreenState extends State<ToughPasswordScreen> {
                     setState(() {
                       check=true;
                     });
-
+                    int length=int.parse(plen.text);
+                    int chlen=int.parse(pcharlen.text);
+                    int symlen=int.parse(psymlen.text);
+                    int diglen=int.parse(pdigitlen.text);
+                    final pass=passworda(length,chlen,symlen,diglen);
+                    password.text=pass;
 
                   },
                   child: Text("Create Password"),
