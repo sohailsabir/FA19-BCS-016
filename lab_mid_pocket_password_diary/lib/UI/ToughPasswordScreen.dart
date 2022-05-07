@@ -11,6 +11,7 @@ class ToughPasswordScreen extends StatefulWidget {
 }
 
 class _ToughPasswordScreenState extends State<ToughPasswordScreen> {
+  TextEditingController text=new TextEditingController();
   TextEditingController plen=new TextEditingController();
   TextEditingController pcharlen=new TextEditingController();
   TextEditingController psymlen=new TextEditingController();
@@ -48,6 +49,25 @@ class _ToughPasswordScreenState extends State<ToughPasswordScreen> {
         padding: EdgeInsets.fromLTRB(20, 50, 20, 20),
         child: Column(
           children: [
+            TextField(
+              controller: text,
+              decoration: InputDecoration(
+                hintText: "e.g:facebook",
+                  label: Text("Enter Password name"),
+                  focusedBorder:OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.pink, width: 2.0),
+                    borderRadius: BorderRadius.circular(25.0),
+                  ),
+                  icon: Icon(
+                    Icons.title,
+                    color: Colors.pink,
+                  )
+
+              ),
+            ),
+            SizedBox(
+              height: 15.0,
+            ),
             TextField(
               controller: plen,
               keyboardType: TextInputType.number,
@@ -182,7 +202,7 @@ class _ToughPasswordScreenState extends State<ToughPasswordScreen> {
                   onPressed: check==false?null:()async{
                     await FirebaseFirestore.instance.collection("PasswordBD").add({
                       'password':password.text,
-                      'name':'Tough Password',
+                      'name':text.text,
                     }).then((value) {
                       print(value.id);
                       setState(() {

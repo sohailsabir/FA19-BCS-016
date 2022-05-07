@@ -12,6 +12,7 @@ class SimplePasswordScreen extends StatefulWidget {
 
 class _SimplePasswordScreenState extends State<SimplePasswordScreen> {
   TextEditingController GeneratePassword=new TextEditingController();
+  TextEditingController text=new TextEditingController();
   String passworda()
   {
     const characters = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz';
@@ -51,6 +52,26 @@ class _SimplePasswordScreenState extends State<SimplePasswordScreen> {
         padding: EdgeInsets.fromLTRB(20, 100, 20, 20),
         child: Column(
           children: [
+            TextField(
+
+              controller: text,
+              autofocus: true,
+              decoration: InputDecoration(
+                label: Text("Enter name of password"),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.pink,
+                        width: 2.0),
+                  ),
+                  hintText: "e.g: facebook",
+                  icon: Icon(
+                    Icons.title,
+                    color: Colors.pink,
+                  )
+              ),
+            ),
+            SizedBox(
+              height: 50.0,
+            ),
             TextField(
 
               controller: GeneratePassword,
@@ -95,7 +116,7 @@ class _SimplePasswordScreenState extends State<SimplePasswordScreen> {
                   onPressed: check==false?null:()async{
                     await FirebaseFirestore.instance.collection("PasswordBD").add({
                       'password':GeneratePassword.text,
-                      'name':'Weak Password',
+                      'name':text.text,
                     }).then((value) {
                       print(value.id);
                       setState(() {
