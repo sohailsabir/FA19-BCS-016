@@ -132,7 +132,7 @@ class CustomCard extends StatelessWidget {
                           decoration: InputDecoration(
                               icon: Icon(
                                 Icons.password,
-                                color: Colors.pink,
+                                color: Colors.blue,
                               )
                           ),
                         ),
@@ -154,7 +154,7 @@ class CustomCard extends StatelessWidget {
 
                               Navigator.of(context).pop();
                             },
-                            child: Text('Cancel', style: TextStyle(color: Colors.pink),),
+                            child: Text('Cancel', style: TextStyle(color: Colors.blue),),
                           ),
                         ],
                       );
