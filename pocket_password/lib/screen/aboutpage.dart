@@ -5,7 +5,7 @@ class Aboutpage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("About"),
-        backgroundColor: Colors.pink,
+        backgroundColor: Colors.blue,
       ),
       body: SafeArea(
         child: Center(
@@ -23,11 +23,11 @@ class Aboutpage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
                   ),),
-                Text("Version: 0.1", style: TextStyle(
+                Text("Version: 1.1", style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
                 ),),
-                Text("Made by: Muhammad Sohail Sabir", style: TextStyle(
+                Text("Made by: Muhammad Sohail Sabir & Sana Sabir", style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
                 ),),
