@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pocket_password/Authication/Method.dart';
 
 class SimplePasswordScreen extends StatefulWidget {
   const SimplePasswordScreen({Key? key}) : super(key: key);
@@ -113,7 +114,10 @@ class _SimplePasswordScreenState extends State<SimplePasswordScreen> {
                 ),
                 ElevatedButton(
                   onPressed: check==false?null:()async{
-                    await FirebaseFirestore.instance.collection("PasswordBD").add({
+                    final uid= await getUserId();
+                    print(uid);
+
+                    await FirebaseFirestore.instance.collection("PasswordBD").doc(uid).collection('password').add({
                       'password':GeneratePassword.text,
                       'name':text.text,
                     }).then((value) {

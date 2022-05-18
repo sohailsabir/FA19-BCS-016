@@ -48,3 +48,7 @@ Future logout(BuildContext context)async{
     print(e);
   }
 }
+Future<String>getUserId()async{
+  FirebaseAuth _auth=FirebaseAuth.instance;
+  return await(_auth.currentUser!.uid);
+}

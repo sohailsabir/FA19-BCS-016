@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:pocket_password/Authication/Method.dart';
 
 class ViewPasswordScreen extends StatefulWidget {
   const ViewPasswordScreen({Key? key}) : super(key: key);
@@ -29,7 +30,7 @@ class _ViewPasswordScreenState extends State<ViewPasswordScreen> {
         ],
       ),
       body: StreamBuilder(
-        stream: firebaseDB,
+        stream: getUserdata(context),
         builder: (context,AsyncSnapshot snapshot){
           if(!snapshot.hasData)return Center(child: CircularProgressIndicator());
           return ListView.builder(
@@ -52,6 +53,11 @@ class _ViewPasswordScreenState extends State<ViewPasswordScreen> {
       ),
       );
   }
+
+}
+Stream<QuerySnapshot>getUserdata(BuildContext context)async*{
+  final uid= await getUserId();
+  yield* FirebaseFirestore.instance.collection("PasswordBD").doc(uid).collection("password").snapshots();
 }
 class CustomCard extends StatelessWidget {
 
@@ -165,7 +171,8 @@ class CustomCard extends StatelessWidget {
                 color: Colors.green,
               ),),
               IconButton(onPressed: () async{
-                  var FirebaseReference=FirebaseFirestore.instance.collection('PasswordBD');
+                final uid=await getUserId();
+                  var FirebaseReference=FirebaseFirestore.instance.collection('PasswordBD').doc(uid).collection("password");
                   await FirebaseReference.doc(docId).delete();
 
                 },
