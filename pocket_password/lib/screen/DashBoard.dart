@@ -16,7 +16,35 @@ class DashBoard extends StatelessWidget {
         title: Text("Pocket Password App"),
         backgroundColor: Colors.blue,
         actions: [
-          IconButton(onPressed: (){logout(context);}, icon: Icon(Icons.logout),),
+          IconButton(onPressed: (){
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Are you sure?'),
+                actions: [
+                  TextButton(
+                    onPressed: (){
+                      logout(context);
+                    },
+                    child: Text(
+                      'Logout',
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      'No',
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                ],
+              );
+            });
+            }, icon: Icon(Icons.logout),),
         ],
       ),
       drawer: Drawer(

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pocket_password/Authication/LoginPage.dart';
 import 'package:pocket_password/Authication/Method.dart';
+import 'package:pocket_password/Widgets/Loading.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -29,7 +30,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: isloading?Center(child: CircularProgressIndicator(),):Form(
+        child: isloading?Center(child: spinkit,):Form(
           key: _form,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -145,8 +146,11 @@ class _SignUpPageState extends State<SignUpPage> {
                         if(user!=null){
                           setState(() {
                             isloading=false;
+                            const snackBar = SnackBar(
+                              content: Text('Create Account Successfully'),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
                           });
-                          print("Login successfully");
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
 
                         }

@@ -43,7 +43,7 @@ Future logout(BuildContext context)async{
   FirebaseAuth _auth=FirebaseAuth.instance;
   try{
     await _auth.signOut();
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginPage()));
   }catch(e){
     print(e);
   }

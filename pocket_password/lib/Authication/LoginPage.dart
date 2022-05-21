@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pocket_password/Authication/CreateAccount.dart';
 import 'package:pocket_password/Authication/Method.dart';
+import 'package:pocket_password/Widgets/Loading.dart';
 import 'package:pocket_password/screen/DashBoard.dart';
-import 'package:pocket_password/screen/Wellcomepage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: isloading?Center(child: CircularProgressIndicator(),):Column(
+        child: isloading?Center(child: spinkit):Column(
 
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
