@@ -39,6 +39,7 @@ dependencies:
   cloud_firestore: ^3.1.15
   flutter_spinkit: ^5.1.0
   splash_screen_view: ^3.0.0
+  share_plus: ^4.0.4
 
 dev_dependencies:
   flutter_test:

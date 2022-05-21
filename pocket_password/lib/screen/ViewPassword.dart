@@ -1,8 +1,10 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pocket_password/Authication/Method.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ViewPasswordScreen extends StatefulWidget {
   const ViewPasswordScreen({Key? key}) : super(key: key);
@@ -123,7 +125,12 @@ class CustomCard extends StatelessWidget {
                 icon: Icon(Icons.copy,color: Colors.lightBlue,),
               ),
               IconButton(
-                onPressed: (){},
+                onPressed: (){
+                  String name=snapshot.docs[index]['name'];
+                  String password=snapshot.docs[index]['password'];
+
+                  Share.share("$name"": $password",subject: snapshot.docs[index]['name']);
+                },
                 icon: Icon(Icons.share,color: Colors.lightBlue,),
               ),
               IconButton(
