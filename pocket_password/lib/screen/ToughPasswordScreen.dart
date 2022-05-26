@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:pocket_password/Authication/Method.dart';
+import 'package:pocket_password/Widgets/Loading.dart';
 
 class ToughPasswordScreen extends StatefulWidget {
   const ToughPasswordScreen({Key? key}) : super(key: key);
@@ -17,6 +19,7 @@ class _ToughPasswordScreenState extends State<ToughPasswordScreen> {
   TextEditingController psymlen=new TextEditingController();
   TextEditingController pdigitlen=new TextEditingController();
   TextEditingController password=new TextEditingController();
+  bool isloading=false;
   String passworda(int charlen,int symlen,int digitlen)
   {
     int total=charlen+symlen+digitlen;
@@ -45,7 +48,7 @@ class _ToughPasswordScreenState extends State<ToughPasswordScreen> {
         title: Text("Create Tough Password"),
         backgroundColor: Colors.blue,
       ),
-      body:  Container(
+      body:  isloading?saveloading:Container(
         padding: EdgeInsets.fromLTRB(20, 50, 20, 20),
         child: Column(
           children: [
@@ -175,6 +178,8 @@ class _ToughPasswordScreenState extends State<ToughPasswordScreen> {
                   child: Text("Create Password"),
                   style: ElevatedButton.styleFrom(
                     primary: Colors.blue,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                      padding: EdgeInsets.all(15),
                   ),
                 ),
                 SizedBox(
@@ -182,25 +187,49 @@ class _ToughPasswordScreenState extends State<ToughPasswordScreen> {
                 ),
                 ElevatedButton(
                   onPressed: check==false?null:()async{
-                    await FirebaseFirestore.instance.collection("PasswordBD").add({
-                      'password':password.text,
-                      'name':text.text,
-                    }).then((value) {
-                      print(value.id);
+                    if(text.text.isNotEmpty&&password.text.isNotEmpty){
                       setState(() {
-                        check=false;
-                        const snackBar = SnackBar(
-                          content: Text('Data Save Successfully'),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        isloading=true;
                       });
-                    }).catchError((error){
-                      print(error);
-                    });
+                      final uid= await getUserId();
+                      await FirebaseFirestore.instance.collection("PasswordBD").doc(uid).collection('password').add({
+                        'password':password.text,
+                        'name':text.text,
+                      }).then((value) {
+                        print(value.id);
+                        setState(() {
+                          check=false;
+                          isloading=false;
+                          const snackBar = SnackBar(
+                            content: Text('Data Save Successfully'),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          text.clear();
+                          password.clear();
+                          plen.clear();
+                          pcharlen.clear();
+                          psymlen.clear();
+                          pdigitlen.clear();
+                        });
+                      }).catchError((error){
+                        print(error);
+                      });
+                    }
+                    else{
+                      const snackBar = SnackBar(
+                        content: Text("Please fill all field"),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                    }
+
                   },
                   child: Text("Save Password"),
                   style: ElevatedButton.styleFrom(
                     primary: Colors.blue,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                    padding: EdgeInsets.all(15),
+
 
                   ),
                 ),

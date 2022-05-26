@@ -100,13 +100,11 @@ class _LoginPageState extends State<LoginPage> {
                     });
                     Loginuser(_email.text.trim(), _password.text).then((user){
                       if(user!=null){
-                        print("Login Successfully");
                         setState(() {
                           isloading=false;
                         });
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>DashBoard()));
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>DashBoard()));
                       }else{
-                        print("Login Failed");
                         setState(() {
                           isloading=false;
                         });

@@ -3,6 +3,7 @@ import 'package:pocket_password/Authication/Method.dart';
 import 'package:pocket_password/screen/ToughPasswordScreen.dart';
 import 'package:pocket_password/screen/ViewPassword.dart';
 import 'package:pocket_password/screen/aboutpage.dart';
+import 'package:pocket_password/screen/customPasswordScreen.dart';
 import 'package:pocket_password/screen/simplePasswordScreen.dart';
 
 class DashBoard extends StatelessWidget {
@@ -16,35 +17,10 @@ class DashBoard extends StatelessWidget {
         title: Text("Pocket Password App"),
         backgroundColor: Colors.blue,
         actions: [
-          IconButton(onPressed: (){
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text('Are you sure?'),
-                actions: [
-                  TextButton(
-                    onPressed: (){
-                      logout(context);
-                    },
-                    child: Text(
-                      'Logout',
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      'No',
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                  ),
-                ],
-              );
-            });
-            }, icon: Icon(Icons.logout),),
+          IconButton(
+            onPressed: (){},
+            icon: Icon(Icons.account_circle),
+          ),
         ],
       ),
       drawer: Drawer(
@@ -116,6 +92,7 @@ class DashBoard extends StatelessWidget {
                mainAxisAlignment: MainAxisAlignment.center,
 
                children: [
+
                  OptionButton(
                    text: "Create Simple Password",
                    onpressed: (){
@@ -129,6 +106,15 @@ class DashBoard extends StatelessWidget {
                    text: "Create Tough Password",
                    onpressed: (){
                      Navigator.push(context, MaterialPageRoute(builder: (context)=>ToughPasswordScreen()));
+                   },
+                 ),
+                 SizedBox(
+                   height: 15.0,
+                 ),
+                 OptionButton(
+                   text: "Custom Password",
+                   onpressed: (){
+                     Navigator.push(context, MaterialPageRoute(builder: (context)=>CustomPasswordScreen()));
                    },
                  ),
                  SizedBox(
@@ -167,6 +153,7 @@ class OptionButton extends StatelessWidget {
         shadowColor: Colors.blue,
         primary: Colors.blue.shade400,
         padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
+        side: BorderSide(width:3, color:Colors.white),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
@@ -175,3 +162,4 @@ class OptionButton extends StatelessWidget {
     );
   }
 }
+

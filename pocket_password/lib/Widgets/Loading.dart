@@ -10,3 +10,13 @@ final spinkit = SpinKitFadingCube(
     );
   },
 );
+
+final saveloading = SpinKitFadingCircle(
+  itemBuilder: (BuildContext context, int index) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: index.isEven ? Colors.lightBlueAccent : Colors.blue,
+      ),
+    );
+  },
+);

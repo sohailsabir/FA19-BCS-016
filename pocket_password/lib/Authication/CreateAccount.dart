@@ -151,7 +151,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             );
                             ScaffoldMessenger.of(context).showSnackBar(snackBar);
                           });
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginPage()));
 
                         }
                         else{
