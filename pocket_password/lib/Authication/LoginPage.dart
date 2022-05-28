@@ -149,14 +149,16 @@ class _LoginPageState extends State<LoginPage> {
                 )
               ],
             ),
-            Container(
-              margin: EdgeInsets.only(top: 100),
-              height: 200,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/background.png"),
-                  fit: BoxFit.fitHeight,
-                )
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.only(top: 100),
+                height: 150,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/background.png"),
+                    fit: BoxFit.fitHeight,
+                  )
+                ),
               ),
             ),
           ],
