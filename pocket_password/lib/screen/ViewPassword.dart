@@ -3,8 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pocket_password/Authication/Method.dart';
+import 'package:pocket_password/PdfFuction/mobile.dart';
 import 'package:pocket_password/Widgets/CustomCard.dart';
 import 'package:pocket_password/Widgets/Loading.dart';
+
 
 
 class ViewPasswordScreen extends StatefulWidget {
@@ -15,7 +17,11 @@ class ViewPasswordScreen extends StatefulWidget {
 }
 
 class _ViewPasswordScreenState extends State<ViewPasswordScreen> {
-  // var firebaseDB = FirebaseFirestore.instance.collection("PasswordBD").snapshots();
+  final Pdfservices _pdfservices=Pdfservices();
+  List Pdfdata = [];
+  bool loading=true;
+
+  bool isFirstTime=false;
   String name="";
   bool eyeVisibily = true;
   bool searchState = false;
@@ -29,13 +35,34 @@ class _ViewPasswordScreenState extends State<ViewPasswordScreen> {
         .collection("password")
         .snapshots();
   }
+  // getDataForPdf() async {
+  //   final uid = await getUserId();
+  //   var data= FirebaseFirestore.instance
+  //       .collection("PasswordBD")
+  //       .doc(uid)
+  //       .collection("password")
+  //       .get();
+  //   setState(() {
+  //
+  //   });
+  //   return "Complete";
+  // }
+  // @override
+  // void didChangeDependencies() {
+  //   // TODO: implement didChangeDependencies
+  //   super.didChangeDependencies();
+  //   dataloaded=getDataForPdf();
+  //
+  // }
+
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: !searchState
-            ? Text("View All Password")
+            ? Text("All Passwords")
             : TextField(
                 controller: searchcontroller,
                 autofocus: true,
@@ -71,11 +98,38 @@ class _ViewPasswordScreenState extends State<ViewPasswordScreen> {
                   },
                   icon: Icon(Icons.cancel)),
           IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.download_rounded),
+              onPressed: () {
+                setState(() {
+                  eyeVisibily=!eyeVisibily;
+                });
+              },
+              icon: Icon(eyeVisibily?Icons.visibility_off:Icons.visibility)),
+          IconButton(
+            onPressed:()async{
+                await getData();
+                if(Pdfdata.isNotEmpty)
+                  {
+                    setState(() {
+                      loading=true;
+                    });
+                    final data=await _pdfservices.createPdf(Pdfdata);
+                    _pdfservices.saveAndLanchFile(data, "Pocket Password.pdf");
+                    Pdfdata.clear();
+                  }
+                else{
+                  setState(() {
+                    loading=false;
+                  });
+                }
+
+            },
+
+
+            icon: Icon(loading?Icons.download_rounded:Icons.arrow_circle_down_sharp),
           ),
         ],
       ),
+
       body: StreamBuilder(
         stream: getUserdata(),
         builder: (context, AsyncSnapshot snapshot) {
@@ -87,12 +141,6 @@ class _ViewPasswordScreenState extends State<ViewPasswordScreen> {
                   return CustomCard(
                   snapshot: snapshot.data,
                   index: index,
-                  icon: eyeVisibily ? Icons.visibility_off : Icons.visibility,
-                  onpressed: () {
-                    setState(() {
-                      eyeVisibily = !eyeVisibily;
-                    });
-                  },
                   passvisibiliy: eyeVisibily,
                 );
                 }
@@ -100,12 +148,6 @@ class _ViewPasswordScreenState extends State<ViewPasswordScreen> {
                   return CustomCard(
                     snapshot: snapshot.data,
                     index: index,
-                    icon: eyeVisibily ? Icons.visibility_off : Icons.visibility,
-                    onpressed: () {
-                      setState(() {
-                        eyeVisibily = !eyeVisibily;
-                      });
-                    },
                     passvisibiliy: eyeVisibily,
                   );
 
@@ -120,6 +162,33 @@ class _ViewPasswordScreenState extends State<ViewPasswordScreen> {
         },
       ),
     );
+  }
+  // Future<void>_createPDF()async{
+  //   final snapshot=getUserdata();
+  //   PdfDocument document=PdfDocument();
+  //   final page=document.pages.add();
+  //   page.graphics.drawString("${snapshot}",PdfStandardFont(PdfFontFamily.helvetica, 30));
+  //   List<int>bytes=document.save();
+  //   document.dispose();
+  //   saveAndLanchFile(bytes, "Output.pdf");
+  // }
+  // Future getDocs() async {
+  //   final uid = await getUserId();
+  //   QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("PasswordBD").doc(uid).collection("password").get();
+  //   for (int i = 0; i < querySnapshot.docs.length; i++) {
+  //     var a = querySnapshot.docs[i];
+  //     return a;
+  //   }
+  // }
+  getData() async {
+    final uid = await getUserId();
+    await FirebaseFirestore.instance.collection("PasswordBD").doc(uid).collection("password").get().then((value) {
+      for(var i in value.docs) {
+        Pdfdata.add(i.data());
+
+
+      }
+    });
   }
 }
 

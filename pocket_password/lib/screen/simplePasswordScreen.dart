@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pocket_password/Authication/Method.dart';
+import 'package:pocket_password/Encrypt%20and%20Decrypt/Encryptdata.dart';
 import 'package:pocket_password/Widgets/Loading.dart';
 
 class SimplePasswordScreen extends StatefulWidget {
@@ -123,6 +124,7 @@ class _SimplePasswordScreenState extends State<SimplePasswordScreen> {
                       setState(() {
                         isloading=true;
                       });
+                      //THis for encryption of data
                       final uid= await getUserId();
                       await FirebaseFirestore.instance.collection("PasswordBD").doc(uid).collection('password').add({
                         'password':GeneratePassword.text,

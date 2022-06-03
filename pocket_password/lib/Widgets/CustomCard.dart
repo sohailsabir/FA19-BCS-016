@@ -2,21 +2,19 @@ import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pocket_password/Authication/Method.dart';
+import 'package:pocket_password/Encrypt%20and%20Decrypt/Encryptdata.dart';
 import 'package:share_plus/share_plus.dart';
 
 class CustomCard extends StatelessWidget {
   CustomCard(
       {required this.snapshot,
         required this.index,
-        required this.icon,
-        required this.onpressed,
         required this.passvisibiliy});
 
   final QuerySnapshot snapshot;
   final int index;
-  final IconData icon;
   final bool passvisibiliy;
-  final VoidCallback onpressed;
+
 
   @override
   Widget build(BuildContext context) {
@@ -61,14 +59,6 @@ class CustomCard extends StatelessWidget {
                         style: TextStyle(color: Colors.grey),
                       ),
                     ],
-                  ),
-                  IconButton(
-                    onPressed: onpressed,
-                    icon: Icon(
-                      icon,
-                    ),
-                    iconSize: 30,
-                    color: Colors.lightBlue,
                   ),
                   // Text("${snapshot.docs[index]['name']}",style: TextStyle(
                   //     fontWeight: FontWeight.w500

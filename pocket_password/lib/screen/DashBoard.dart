@@ -16,12 +16,7 @@ class DashBoard extends StatelessWidget {
         elevation: 12,
         title: Text("Pocket Password App"),
         backgroundColor: Colors.blue,
-        actions: [
-          IconButton(
-            onPressed: (){},
-            icon: Icon(Icons.account_circle),
-          ),
-        ],
+
       ),
       drawer: Drawer(
         backgroundColor: Colors.white,
