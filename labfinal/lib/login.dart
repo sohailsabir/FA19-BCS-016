@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:labfinal/Screen/Signup.dart';
+import 'package:labfinal/admin/admindashboard.dart';
 import 'package:labfinal/forgetPassword.dart';
 
 class Login extends StatefulWidget {
@@ -113,7 +114,9 @@ class _LoginState extends State<Login> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>AdminDashboard()));
+                  },
                   child: Text(
                     "Login",
                     style: TextStyle(
