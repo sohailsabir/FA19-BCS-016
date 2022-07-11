@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:labfinal/admin/AddClass.dart';
+import 'package:labfinal/admin/ViewClass.dart';
 class ClassPage extends StatelessWidget {
   const ClassPage({Key? key}) : super(key: key);
 
@@ -20,12 +23,16 @@ class ClassPage extends StatelessWidget {
           children: [
             TeacherRepeatContainer(
               title: "ADD Class",
-              onpressed: (){},
+              onpressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>AddClass()));
+              },
               icon: Icons.add_outlined,
             ),
             TeacherRepeatContainer(
               title: "Class INFO",
-              onpressed: (){},
+              onpressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ViewClass()));
+              },
               icon: Icons.info,
             ),
           ],
@@ -48,14 +55,14 @@ class TeacherRepeatContainer extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(
-            color: Colors.deepPurple,
+            color: Colors.white,
             width: 4,
           ),
-          color: Colors.deepPurple.shade300,
+          color: Colors.deepPurple,
           borderRadius: BorderRadius.circular(20),
         ),
         margin: EdgeInsets.all(20),
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(15),
 
         child: Center(
           child: Column(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:labfinal/admin/add%20teacher.dart';
 class TeacherPage extends StatelessWidget {
   const TeacherPage({Key? key}) : super(key: key);
 
@@ -20,7 +21,9 @@ class TeacherPage extends StatelessWidget {
           children: [
             TeacherRepeatContainer(
               title: "ADD TEACHER",
-              onpressed: (){},
+              onpressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>AddTeacher()));
+              },
               icon: Icons.add_outlined,
             ),
             TeacherRepeatContainer(
@@ -48,14 +51,14 @@ class TeacherRepeatContainer extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(
-            color: Colors.deepPurple,
+            color: Colors.white,
             width: 4,
           ),
-          color: Colors.deepPurple.shade300,
+          color: Colors.deepPurple,
           borderRadius: BorderRadius.circular(20),
         ),
         margin: EdgeInsets.all(20),
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(15),
 
         child: Center(
           child: Column(

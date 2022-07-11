@@ -4,11 +4,13 @@ import 'package:labfinal/admin/StudentPage.dart';
 import 'package:labfinal/admin/SubjectPage.dart';
 import 'package:labfinal/admin/Teacherpage.dart';
 class AdminDashboard extends StatelessWidget {
-  const AdminDashboard({Key? key}) : super(key: key);
+
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
         title: Text("Fee Management App"),

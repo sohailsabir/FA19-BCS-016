@@ -48,14 +48,14 @@ class TeacherRepeatContainer extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(
-            color: Colors.deepPurple,
+            color: Colors.white,
             width: 4,
           ),
-          color: Colors.deepPurple.shade300,
+          color: Colors.deepPurple,
           borderRadius: BorderRadius.circular(20),
         ),
         margin: EdgeInsets.all(20),
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(15),
 
         child: Center(
           child: Column(
