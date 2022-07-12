@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:labfinal/Screen/Signup.dart';
+import 'package:labfinal/Authentication/Signup.dart';
 
 class StudentLogin extends StatefulWidget {
   const StudentLogin({Key? key}) : super(key: key);

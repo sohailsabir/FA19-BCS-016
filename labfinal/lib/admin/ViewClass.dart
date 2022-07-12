@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:labfinal/Authentication/firebaseAuthentication.dart';
 import 'package:labfinal/Component/Loading.dart';
 
 class ViewClass extends StatefulWidget {
@@ -14,7 +15,8 @@ class _ViewClassState extends State<ViewClass> {
   String cname = "";
 
   Stream<QuerySnapshot>getUserData()async*{
-    yield* FirebaseFirestore.instance.collection('classes').snapshots();
+    final uid=await getUserId();
+    yield* FirebaseFirestore.instance.collection('Acedemy').doc(uid).collection('classes').snapshots();
   }
 
   @override
@@ -134,8 +136,9 @@ class CustomCard extends StatelessWidget {
                         actions: [
                           TextButton(onPressed: (){Navigator.pop(context);}, child: Text("Cancel",style: TextStyle(color: Colors.red),),),
                           TextButton(onPressed: ()async{
+                            final uid=await getUserId();
                             if(cname.text.isNotEmpty){
-                              FirebaseFirestore.instance.collection('classes').doc(docid).update({
+                              FirebaseFirestore.instance.collection('Acedemy').doc(uid).collection('classes').doc(docid).update({
                                 'cname':cname.text
                               }).then((value){
                                 Navigator.pop(context);
@@ -155,10 +158,11 @@ class CustomCard extends StatelessWidget {
                         actions: [
                           TextButton(
                             onPressed: () async {
+                              final uid=await getUserId();
                               Navigator.pop(context);
 
 
-                              var FirebaseReference=FirebaseFirestore.instance.collection("classes");
+                              var FirebaseReference=FirebaseFirestore.instance.collection('Acedemy').doc(uid).collection("classes");
                               await FirebaseReference.doc(docid).delete();
 
 

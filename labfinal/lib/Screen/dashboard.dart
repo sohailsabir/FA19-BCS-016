@@ -1,6 +1,6 @@
 import 'package:animated_button/animated_button.dart';
 import 'package:flutter/material.dart';
-import 'package:labfinal/login.dart';
+import 'package:labfinal/Authentication/login.dart';
 import 'package:labfinal/studentLogin.dart';
 import 'package:labfinal/teacherLogin.dart';
 
@@ -10,6 +10,7 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text("Welcome"),
         centerTitle: true,

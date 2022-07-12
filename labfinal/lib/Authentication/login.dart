@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:labfinal/Screen/Signup.dart';
+import 'package:labfinal/Authentication/firebaseAuthentication.dart';
+import 'package:labfinal/Component/Loading.dart';
+import 'package:labfinal/Authentication/Signup.dart';
 import 'package:labfinal/admin/admindashboard.dart';
-import 'package:labfinal/forgetPassword.dart';
+import 'package:labfinal/Authentication/forgetPassword.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -12,6 +14,9 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool passvisibility = true;
+  TextEditingController _email= TextEditingController();
+  TextEditingController _password=TextEditingController();
+  bool isloading=false;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +24,7 @@ class _LoginState extends State<Login> {
       resizeToAvoidBottomInset: false,
 
       body: SafeArea(
-        child: Container(
+        child: isloading?Center(child: saveloading,):Container(
           decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("assets/bg.webp"),
@@ -52,6 +57,7 @@ class _LoginState extends State<Login> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: TextField(
+                  controller: _email,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     hintText: "Enter your Email",
@@ -77,6 +83,7 @@ class _LoginState extends State<Login> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: TextField(
+                  controller: _password,
                   keyboardType: TextInputType.visiblePassword,
                   obscureText: passvisibility,
                   decoration: InputDecoration(
@@ -115,7 +122,32 @@ class _LoginState extends State<Login> {
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>AdminDashboard()));
+                    if(_email.text.isNotEmpty&&_password.text.isNotEmpty){
+                      setState(() {
+                        isloading=true;
+                      });
+                      Loginuser(_email.text.trim(), _password.text).then((user){
+                        if(user!=null){
+                          setState(() {
+                            isloading=false;
+
+                          });
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>AdminDashboard()));
+                        }
+                        else{
+                          setState(() {
+                            isloading=false;
+                          });
+                        }
+                      } );
+                    }
+                    else{
+                      const snackBar = SnackBar(
+                        content: Text('Invalid Password'),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }
+
                   },
                   child: Text(
                     "Login",

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:labfinal/Authentication/firebaseAuthentication.dart';
 import 'package:labfinal/Component/Loading.dart';
 
 class ViewSubject extends StatefulWidget {
@@ -14,7 +15,8 @@ class _ViewSubjectState extends State<ViewSubject> {
   String sname = "";
 
   Stream<QuerySnapshot>getUserData()async*{
-    yield* FirebaseFirestore.instance.collection('subjects').snapshots();
+    final uid=await getUserId();
+    yield* FirebaseFirestore.instance.collection('Acedemy').doc(uid).collection('subjects').snapshots();
   }
 
   @override
@@ -134,8 +136,9 @@ class CustomCard extends StatelessWidget {
                         actions: [
                           TextButton(onPressed: (){Navigator.pop(context);}, child: Text("Cancel",style: TextStyle(color: Colors.red),),),
                           TextButton(onPressed: ()async{
+                            final uid=await getUserId();
                             if(cname.text.isNotEmpty){
-                              FirebaseFirestore.instance.collection('subjects').doc(docid).update({
+                              FirebaseFirestore.instance.collection('Acedemy').doc(uid).collection('subjects').doc(docid).update({
                                 'sname':cname.text
                               }).then((value){
                                 Navigator.pop(context);
@@ -155,10 +158,11 @@ class CustomCard extends StatelessWidget {
                             actions: [
                               TextButton(
                                 onPressed: () async {
+                                  final uid=await getUserId();
                                   Navigator.pop(context);
 
 
-                                  var FirebaseReference=FirebaseFirestore.instance.collection("subjects");
+                                  var FirebaseReference=FirebaseFirestore.instance.collection('Acedemy').doc(uid).collection("subjects");
                                   await FirebaseReference.doc(docid).delete();
 
 

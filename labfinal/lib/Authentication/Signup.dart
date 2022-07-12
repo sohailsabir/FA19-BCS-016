@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:labfinal/login.dart';
+import 'package:labfinal/Authentication/firebaseAuthentication.dart';
+import 'package:labfinal/Component/Loading.dart';
+import 'package:labfinal/admin/admindashboard.dart';
+import 'package:labfinal/Authentication/login.dart';
 
 class Signup extends StatefulWidget {
   const Signup({Key? key}) : super(key: key);
@@ -18,13 +21,14 @@ class _SignupState extends State<Signup> {
     bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(e);
     return emailValid;
   }
+  bool isloading=false;
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: isloading?Center(child: saveloading,):SingleChildScrollView(
           child: Container(
             height: 950,
             decoration: BoxDecoration(
@@ -194,7 +198,33 @@ class _SignupState extends State<Signup> {
                           return;
                         }
                         if(_form.currentState!.validate()){
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Login()));
+                          setState(() {
+                            isloading=true;
+
+                          });
+                          createAccount(AcedemyName.text, email.text.trim(), password.text).then((user){
+                            if(user!=null){
+                              setState(() {
+                                isloading=false;
+                                const snackBar = SnackBar(
+                                  content: Text('Create Account Successfully'),
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                              });
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Login()));
+                            }
+                            else{
+                              setState(() {
+                                isloading=false;
+                              });
+                              const snackBar = SnackBar(
+                                content: Text('Failed to create Account'),
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                            }
+                          });
                         }
                       },
                       child: Text(

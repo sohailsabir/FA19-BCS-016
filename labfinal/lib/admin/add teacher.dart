@@ -1,10 +1,13 @@
-import 'dart:ffi';
+
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:labfinal/Authentication/firebaseAuthentication.dart';
+import 'package:labfinal/Component/Loading.dart';
+import 'package:uuid/uuid.dart';
 
 class AddTeacher extends StatefulWidget {
   const AddTeacher({Key? key}) : super(key: key);
@@ -14,11 +17,14 @@ class AddTeacher extends StatefulWidget {
 }
 
 class _AddTeacherState extends State<AddTeacher> {
-  TextEditingController tname = new TextEditingController();
-  TextEditingController temail = new TextEditingController();
-  TextEditingController tphone = new TextEditingController();
-  TextEditingController tpassword = new TextEditingController();
+  TextEditingController tname =  TextEditingController();
+  TextEditingController temail =  TextEditingController();
+  TextEditingController tphone =  TextEditingController();
+  TextEditingController tpassword =  TextEditingController();
   var tsubject;
+  var tclasses;
+  bool isLoading=false;
+
 
   final _formkey = GlobalKey<FormState>();
 
@@ -30,9 +36,10 @@ class _AddTeacherState extends State<AddTeacher> {
   }
 
   final ImagePicker _picker = ImagePicker();
-  List<String> listitem =<String> ['math', 'english', 'urdu'];
   File? pickimage;
   String? imageURL;
+
+
 
   Future getCameraImage() async {
     var img = await _picker.pickImage(source: ImageSource.camera);
@@ -42,7 +49,6 @@ class _AddTeacherState extends State<AddTeacher> {
       });
     }
   }
-
   Future getGalleryImage() async {
     var img = await _picker.pickImage(source: ImageSource.gallery);
     if (img != null) {
@@ -50,6 +56,14 @@ class _AddTeacherState extends State<AddTeacher> {
         pickimage = File(img.path);
       });
     }
+  }
+  Stream<QuerySnapshot> getClassData()async*{
+    final uid=await getUserId();
+    yield* FirebaseFirestore.instance.collection('Acedemy').doc(uid).collection('classes').snapshots();
+}
+  Stream<QuerySnapshot> getSubjectData()async*{
+    final uid=await getUserId();
+    yield* FirebaseFirestore.instance.collection('Acedemy').doc(uid).collection('subjects').snapshots();
   }
 
   @override
@@ -59,7 +73,7 @@ class _AddTeacherState extends State<AddTeacher> {
         title: Text("Add Teacher"),
         backgroundColor: Colors.deepPurple,
       ),
-      body: SingleChildScrollView(
+      body: isLoading?saveloading:SingleChildScrollView(
         child: Form(
           key: _formkey,
           child: Column(
@@ -288,10 +302,33 @@ class _AddTeacherState extends State<AddTeacher> {
                 height: 20,
               ),
               StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance.collection('subjects').snapshots(),
+                  stream: getSubjectData(),
                 builder: (context,AsyncSnapshot snapshot){
                     if(!snapshot.hasData){
-                      return Text('loading');
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: TextFormField(
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          hintText: "Data not available",
+                          hintStyle: TextStyle(color: Colors.grey),
+                          prefixIcon: Icon(
+                            Icons.class__rounded,
+                            color: Colors.deepPurple,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                            BorderSide(width: 3, color: Colors.deepPurple),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                            BorderSide(width: 3, color: Colors.deepPurple),
+                          ),
+                        ),
+                      ),
+                      );
                     }
                     else{
                       List<DropdownMenuItem>subjectname=[];
@@ -330,6 +367,7 @@ class _AddTeacherState extends State<AddTeacher> {
                                 hint: Text("Select Subject",style: TextStyle(color: Colors.deepPurple,fontSize: 18,),),
 
 
+
                               ),
 
                             ],
@@ -340,17 +378,43 @@ class _AddTeacherState extends State<AddTeacher> {
                     }
                 },
               ),
+              SizedBox(
+                height: 20,
+              ),
               StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection('classes').snapshots(),
+                stream: getClassData(),
                 builder: (context,AsyncSnapshot snapshot){
                   if(!snapshot.hasData){
-                    return Text('loading');
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: TextFormField(
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          hintText: "Data not available",
+                          hintStyle: TextStyle(color: Colors.grey),
+                          prefixIcon: Icon(
+                            Icons.class__rounded,
+                            color: Colors.deepPurple,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                            BorderSide(width: 3, color: Colors.deepPurple),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                            BorderSide(width: 3, color: Colors.deepPurple),
+                          ),
+                        ),
+                      ),
+                    );
                   }
                   else{
-                    List<DropdownMenuItem>subjectname=[];
+                    List<DropdownMenuItem>classname=[];
                     for(int i=0;i<snapshot.data.docs.length;i++){
                       DocumentSnapshot snap=snapshot.data.docs[i];
-                      subjectname.add(
+                      classname.add(
                         DropdownMenuItem(
                           child: Text(snap['cname'],style: TextStyle(color: Colors.deepPurple,fontSize: 20),),
                           value: "${snap['cname']}",
@@ -374,12 +438,12 @@ class _AddTeacherState extends State<AddTeacher> {
                             Icon(Icons.class__rounded,color: Colors.deepPurple,),
                             SizedBox(width: 20,),
                             DropdownButton<dynamic>(
-                              items: subjectname, onChanged: (subject){
+                              items: classname, onChanged: (classes){
                               setState(() {
-                                tsubject=subject;
+                                tclasses=classes;
                               });
                             },
-                              value: tsubject,
+                              value: tclasses,
                               hint: Text("Select Classes",style: TextStyle(color: Colors.deepPurple,fontSize: 18,),),
 
 
@@ -449,11 +513,67 @@ class _AddTeacherState extends State<AddTeacher> {
                           )),
                     ),
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async{
                         if (!_formkey.currentState!.validate()) {
+
+
+
                           return;
                         }
-                        print(tsubject);
+                        if(_formkey.currentState!.validate()){
+                          if(tclasses!=null&&tsubject!=null&&pickimage!=null){
+                                setState(() {
+                                  isLoading=true;
+                                });
+                                  final uid=await getUserId();
+                                  UploadTask uploadtask=FirebaseStorage.instance.ref().child('teacherimage').child(Uuid().v1()).putFile(pickimage!);
+                                  TaskSnapshot tasksnaphot=await uploadtask;
+                                  imageURL=await tasksnaphot.ref.getDownloadURL();
+
+
+
+                                  FirebaseFirestore.instance.collection('Acedemy').doc(uid).collection('teacher').add({
+                                    'tname':tname.text,
+                                    'temail':temail.text,
+                                    'tphone':tphone.text,
+                                    'tsubject':tsubject,
+                                    'tclass':tclasses,
+                                    'img':imageURL,
+                                    'pas':tpassword.text
+                                  });
+                                    setState(() {
+                                      isLoading=false;
+                                      pickimage=null;
+                                      tclasses=null;
+                                      tsubject=null;
+                                    });
+                                    tname.clear();
+                                    temail.clear();
+                                    tphone.clear();
+                                    tname.clear();
+                                    tpassword.clear();
+                                    const snackBar = SnackBar(
+                                      content: Text('Data Save Successfully'),
+                                    );
+                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+
+
+
+
+
+
+
+                          }
+                          else{
+                            const snackBar = SnackBar(
+                              content: Text('Please fill all data'),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                          }
+
+                        }
                       },
                       child: Text("Save"),
                       style: ElevatedButton.styleFrom(

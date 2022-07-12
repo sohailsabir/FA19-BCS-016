@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 class ForgetPassword extends StatefulWidget {
   const ForgetPassword({Key? key}) : super(key: key);
@@ -50,12 +51,18 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       }return null;
                     },
                     decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.email),
+                        prefixIcon: Icon(Icons.email,color: Colors.deepPurple,),
                         hintText: "Email",
                         hintStyle: TextStyle(color: Colors.grey),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        )),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(width: 3, color: Colors.deepPurple),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(width: 3, color: Colors.deepPurple),
+                      ),
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -65,10 +72,17 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: ElevatedButton.icon(
                     onPressed: () {
+                      FocusManager.instance.primaryFocus?.unfocus();
                       if(!_form.currentState!.validate()){
                         return;
                       }
                       if(_form.currentState!.validate()){
+                        if(!_form.currentState!.validate()){
+                          return;
+                        }
+                        if(_form.currentState!.validate()){
+                          verifyEmail();
+                        }
                       }
 
 
@@ -90,5 +104,30 @@ class _ForgetPasswordState extends State<ForgetPassword> {
           ),
         )
     );
+  }
+  Future verifyEmail()async{
+    try{
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context)=>Center(child: CircularProgressIndicator(),));
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: _email.text.trim());
+      final snackBar = SnackBar(
+        content: Text("Password Reset Email Send"),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      Navigator.pop(context);
+
+    }on FirebaseAuthException catch(e){
+
+      Navigator.pop(context);
+      print(e);
+      final snackBar = SnackBar(
+        content: Text(e.message.toString()),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+    }
+
   }
 }

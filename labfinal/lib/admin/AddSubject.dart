@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:labfinal/Authentication/firebaseAuthentication.dart';
 import 'package:labfinal/Component/Loading.dart';
 
 class AddSubject extends StatefulWidget {
@@ -86,7 +87,8 @@ class _AddSubjectState extends State<AddSubject> {
                         setState(() {
                           isLoading=true;
                         });
-                        await FirebaseFirestore.instance.collection('subjects').add({
+                        final uid=await getUserId();
+                        await FirebaseFirestore.instance.collection('Acedemy').doc(uid).collection('subjects').add({
                           'sname':Sname.text
                         }).then((value){
                           setState(() {
