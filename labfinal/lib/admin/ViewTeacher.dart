@@ -14,9 +14,13 @@ class _ViewTeacherState extends State<ViewTeacher> {
   bool searchSate = false;
   String tname = "";
 
-  Stream<QuerySnapshot>getUserData()async*{
-    final uid=await getUserId();
-    yield* FirebaseFirestore.instance.collection('Acedemy').doc(uid).collection('teacher').snapshots();
+  Stream<QuerySnapshot> getUserData() async* {
+    final uid = await getUserId();
+    yield* FirebaseFirestore.instance
+        .collection('Acedemy')
+        .doc(uid)
+        .collection('teacher')
+        .snapshots();
   }
 
   @override
@@ -27,62 +31,65 @@ class _ViewTeacherState extends State<ViewTeacher> {
         title: !searchSate
             ? Text("View Teacher")
             : TextField(
-          cursorColor: Colors.white,
-          autofocus: true,
-          style: TextStyle(color: Colors.white),
-          decoration:  InputDecoration(
-            focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white)
-            ),
-            hintText: "Search here...",
-            hintStyle: TextStyle(color: Colors.white),
-
-          ),
-          onChanged: (value) {
-            setState(() {
-              tname = value;
-            });
-          },
-        ),
+                cursorColor: Colors.white,
+                autofocus: true,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white)),
+                  hintText: "Search here...",
+                  hintStyle: TextStyle(color: Colors.white),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    tname = value;
+                  });
+                },
+              ),
         actions: [
           !searchSate
               ? IconButton(
-            onPressed: () {
-              setState(() {
-                searchSate = !searchSate;
-              });
-            },
-            icon: Icon(Icons.search),
-          )
+                  onPressed: () {
+                    setState(() {
+                      searchSate = !searchSate;
+                    });
+                  },
+                  icon: Icon(Icons.search),
+                )
               : IconButton(
-              onPressed: () {
-                setState(() {
-                  searchSate = !searchSate;
-                });
-              },
-              icon: Icon(Icons.cancel)),
+                  onPressed: () {
+                    setState(() {
+                      searchSate = !searchSate;
+                    });
+                  },
+                  icon: Icon(Icons.cancel)),
         ],
       ),
       body: StreamBuilder(
         stream: getUserData(),
-        builder: (context,AsyncSnapshot snapshot){
-          if(!snapshot.hasData)return Center(child: saveloading,);
+        builder: (context, AsyncSnapshot snapshot) {
+          if (!snapshot.hasData)
+            return Center(
+              child: saveloading,
+            );
           return ListView.builder(
               itemCount: snapshot.data.docs.length,
-              itemBuilder: (context,int index){
-                if(tname.isEmpty){
+              itemBuilder: (context, int index) {
+                if (tname.isEmpty) {
                   return CustomCard(
                     index: index,
                     snapshot: snapshot.data,
                   );
                 }
-                if(snapshot.data.docs[index]['tname'].toString().toLowerCase().startsWith(tname.toLowerCase())){
+                if (snapshot.data.docs[index]['tname']
+                    .toString()
+                    .toLowerCase()
+                    .startsWith(tname.toLowerCase())) {
                   return CustomCard(
                     index: index,
                     snapshot: snapshot.data,
                   );
-                }
-                else{
+                } else {
                   return Container();
                 }
               });
@@ -93,33 +100,102 @@ class _ViewTeacherState extends State<ViewTeacher> {
 }
 
 class CustomCard extends StatelessWidget {
-  CustomCard({required this.snapshot,required this.index});
+  CustomCard({required this.snapshot, required this.index});
+
   final QuerySnapshot snapshot;
   final int index;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          CircleAvatar(
-            radius: 65,
-            backgroundColor: Colors.deepPurple,
-            child: CircleAvatar(
-              radius: 60,
-              backgroundColor: Colors.white,
-              backgroundImage: NetworkImage(snapshot.docs[index]['img']),
+    return Padding(
+      padding: const EdgeInsets.only(top: 30.0),
+      child: Container(
+
+        decoration: BoxDecoration(
+          color: Colors.grey.shade300,
+
+        ),
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              child: Stack(
+                children:[
+                  Card(
+                    child: Container(
+                      height: 120.0,
+                      color: Colors.deepPurple,
+                    ),
+                  ),
+                  FractionalTranslation(
+                    translation: Offset(0.0, 0.4),
+                    child: Align(
+                      child: CircleAvatar(
+                        radius: 60.0,
+                        backgroundColor: Colors.grey,
+
+                        child: CircleAvatar(
+                          radius: 55.0,
+                          backgroundImage: NetworkImage(snapshot.docs[index]['img']),
+                        ),
+                      ),
+                      alignment: FractionalOffset(0.5, 0.0),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Row(
-            children: [
-              Text("FULL NAME:  "),
-              Text(snapshot.docs[index]['tname'].toString().toUpperCase()),
-            ],
-          ),
-        ],
+            SizedBox(
+              height: 30,
+            ),
+            Row(
+              children: [
+                Text("FULL NAME:  "),
+                Text(snapshot.docs[index]['tname'].toString().toUpperCase()),
+              ],
+            ),
+            Row(
+              children: [
+                Text("Email:  "),
+                Text(snapshot.docs[index]['temail'].toString().toLowerCase(),),
+              ],
+            ),
+            Row(
+              children: [
+                Text("PHONE NO:  "),
+                Text(snapshot.docs[index]['tphone'].toString().toUpperCase()),
+              ],
+            ),
+            Row(
+              children: [
+                Text("Class:  "),
+                Text(snapshot.docs[index]['tclass'].toString().toUpperCase()),
+              ],
+            ),
+            Row(
+              children: [
+                Text("SUBJECT:  "),
+                Text(snapshot.docs[index]['tsubject'].toString().toUpperCase()),
+              ],
+            ),
+            Row(
+              children: [
+                Text("PASSWORD:  "),
+                Text(snapshot.docs[index]['tsubject']),
+              ],
+            ),
+
+          ],
+        ),
       ),
     );
   }
 }
+
+
+
+
+
+
+
 
