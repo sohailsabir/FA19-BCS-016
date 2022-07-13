@@ -118,8 +118,6 @@ class CustomCard extends StatefulWidget {
 
 class _CustomCardState extends State<CustomCard> {
 
-
-
   @override
   Widget build(BuildContext context) {
     final docid = widget.snapshot.docs[widget.index].id;

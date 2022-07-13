@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:labfinal/admin/ClassPage.dart';
+import 'package:labfinal/admin/Fees.dart';
 import 'package:labfinal/admin/StudentPage.dart';
 import 'package:labfinal/admin/SubjectPage.dart';
 import 'package:labfinal/admin/Teacherpage.dart';
@@ -174,7 +175,9 @@ class AdminDashboard extends StatelessWidget {
             Row(
               children: [
                 Expanded(child: RepeatContainer(
-                  onpressed: (){},
+                  onpressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>FeesPage()));
+                  },
                   title: "Fees",
                 ),),
                 Expanded(child: RepeatContainer(

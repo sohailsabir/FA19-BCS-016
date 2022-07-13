@@ -118,7 +118,7 @@ class CustomCard extends StatelessWidget {
         child: Card(
           elevation: 4,
           child: ListTile(
-            title: Text(snapshot.docs[index]['name']),
+            title: Text("Student name:   ${snapshot.docs[index]['name'].toString().toUpperCase()}"),
             leading: CircleAvatar(backgroundImage: NetworkImage(snapshot.docs[index]['img']),
             backgroundColor: Colors.grey),
           ),

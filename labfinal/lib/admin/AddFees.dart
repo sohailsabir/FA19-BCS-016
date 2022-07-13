@@ -1,43 +1,44 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:labfinal/Authentication/firebaseAuthentication.dart';
-import 'package:labfinal/Component/Loading.dart';
 
-class AddStudentSubject extends StatefulWidget {
-   AddStudentSubject({required this.docid});
-   final String docid;
+class AddFees extends StatefulWidget {
+  const AddFees({Key? key}) : super(key: key);
 
   @override
-  _AddStudentSubjectState createState() => _AddStudentSubjectState();
+  _AddFeesState createState() => _AddFeesState();
 }
 
-class _AddStudentSubjectState extends State<AddStudentSubject> {
-  Stream<QuerySnapshot> getSubjectData()async*{
+class _AddFeesState extends State<AddFees> {
+  Stream<QuerySnapshot> getClassData()async*{
     final uid=await getUserId();
-    yield* FirebaseFirestore.instance.collection('Acedemy').doc(uid).collection('subjects').snapshots();
+    yield* FirebaseFirestore.instance.collection('Acedemy').doc(uid).collection('classes').snapshots();
   }
-  var ssubject;
-  bool isLoading=false;
   Stream<QuerySnapshot> getUserData() async* {
     final uid = await getUserId();
     yield* FirebaseFirestore.instance
         .collection('Acedemy')
         .doc(uid)
-        .collection('student').doc(widget.docid).collection('studentsubject')
+        .collection('fees')
         .snapshots();
   }
+  var feeclass;
+  bool isLoading=false;
+  TextEditingController fees=TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Manage Student Subject"),
+        title: Text("Manage Fees"),
         backgroundColor: Colors.deepPurple,
       ),
-      body: isLoading?Center(child: saveloading,):Column(
+      body: Column(
         children: [
-          SizedBox(height: 25),
+          SizedBox(
+            height: 40,
+          ),
           StreamBuilder<QuerySnapshot>(
-            stream: getSubjectData(),
+            stream: getClassData(),
             builder: (context,AsyncSnapshot snapshot){
               if(!snapshot.hasData){
                 return Padding(
@@ -66,13 +67,13 @@ class _AddStudentSubjectState extends State<AddStudentSubject> {
                 );
               }
               else{
-                List<DropdownMenuItem>subjectname=[];
+                List<DropdownMenuItem>classname=[];
                 for(int i=0;i<snapshot.data.docs.length;i++){
                   DocumentSnapshot snap=snapshot.data.docs[i];
-                  subjectname.add(
+                  classname.add(
                     DropdownMenuItem(
-                      child: Text(snap['sname'],style: TextStyle(color: Colors.deepPurple,fontSize: 20),),
-                      value: "${snap['sname']}",
+                      child: Text(snap['cname'],style: TextStyle(color: Colors.deepPurple,fontSize: 20),),
+                      value: "${snap['cname']}",
                     ),
                   );
                 }
@@ -93,14 +94,13 @@ class _AddStudentSubjectState extends State<AddStudentSubject> {
                         Icon(Icons.class__rounded,color: Colors.deepPurple,),
                         SizedBox(width: 20,),
                         DropdownButton<dynamic>(
-                          items: subjectname, onChanged: (subject){
+                          items: classname, onChanged: (classes){
                           setState(() {
-                            ssubject=subject;
+                            feeclass=classes;
                           });
                         },
-                          value: ssubject,
-                          hint: Text("Select Subject",style: TextStyle(color: Colors.deepPurple,fontSize: 18,),),
-
+                          value: feeclass,
+                          hint: Text("Select Classes",style: TextStyle(color: Colors.deepPurple,fontSize: 18,),),
 
 
                         ),
@@ -112,6 +112,40 @@ class _AddStudentSubjectState extends State<AddStudentSubject> {
 
               }
             },
+          ),
+          SizedBox(
+            height: 40,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: TextFormField(
+              controller: fees,
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return "Empty field not allowed";
+                }
+                return null;
+              },
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                hintText: "Enter class Fees",
+                hintStyle: TextStyle(color: Colors.grey),
+                prefixIcon: Icon(
+                  Icons.person,
+                  color: Colors.deepPurple,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide:
+                  BorderSide(width: 3, color: Colors.deepPurple),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide:
+                  BorderSide(width: 3, color: Colors.deepPurple),
+                ),
+              ),
+            ),
           ),
           SizedBox(height: 25),
           Padding(
@@ -134,30 +168,32 @@ class _AddStudentSubjectState extends State<AddStudentSubject> {
                 ),
                 ElevatedButton(
                   onPressed: () async{
-                      if(ssubject!=null){
-                        setState(() {
-                          isLoading=true;
-                        });
-                        final uid=await getUserId();
-                        FirebaseFirestore.instance.collection("Acedemy").doc(uid).collection('student').doc(widget.docid).collection('studentsubject').add({
-                          'name':ssubject,
+                    if(feeclass!=null&&fees.text.isNotEmpty){
+                      setState(() {
+                        isLoading=true;
+                      });
+                      final uid=await getUserId();
+                      FirebaseFirestore.instance.collection("Acedemy").doc(uid).collection('fees').add({
+                        'name':feeclass,
+                        'fees':fees.text
 
-                        });
+                      });
 
-                        setState(() {
-                          isLoading=false;
-                          ssubject=null;
+                      setState(() {
+                        isLoading=false;
+                        feeclass=null;
+                        fees.clear();
 
-                        });
+                      });
 
-                      }
-                      else{
-                        const snackBar = SnackBar(
-                          content: Text('Please fill all data'),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }
+                    else{
+                      const snackBar = SnackBar(
+                        content: Text('Please fill all data'),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-                      }
+                    }
 
 
                   },
@@ -172,39 +208,39 @@ class _AddStudentSubjectState extends State<AddStudentSubject> {
                 ),
               ],
             ),
+
           ),
-          SizedBox(height: 80),
+          SizedBox(height: 60),
           StreamBuilder(
-            stream: getUserData(),
+              stream: getUserData(),
               builder: (context, AsyncSnapshot snapshot){
-              if(!snapshot.hasData)
+                if(!snapshot.hasData)
                 {return Container(
                   child: Text("Nothing to show"),
                 );
 
 
                 }
-             return Expanded(
-               child: ListView.builder(
-                 itemCount: snapshot.data.docs.length,
-                   itemBuilder: (context,int index){
-                 return StudentCustomeCard(snapshot: snapshot.data, index: index,document: widget.docid,);
-               }),
-             );
+                return Expanded(
+                  child: ListView.builder(
+                      itemCount: snapshot.data.docs.length,
+                      itemBuilder: (context,int index){
+                        return FeesCustomeCard(snapshot: snapshot.data, index: index);
+                      }),
+                );
 
-          }),
-
+              }),
         ],
       ),
+
     );
   }
 }
+class FeesCustomeCard extends StatelessWidget {
+  FeesCustomeCard({required this.snapshot,required this.index});
+  final int index;
+  final QuerySnapshot snapshot;
 
-class StudentCustomeCard extends StatelessWidget {
-   StudentCustomeCard({required this.snapshot,required this.index,required this.document});
-   final int index;
-   final QuerySnapshot snapshot;
-   final String document;
 
   @override
   Widget build(BuildContext context) {
@@ -214,29 +250,33 @@ class StudentCustomeCard extends StatelessWidget {
       child: Card(
         elevation: 6,
         child: ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+          title: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
 
-                Row(
-                  children: [
-                    Text("Subject name:  ",style: TextStyle(fontWeight: FontWeight.bold),),
-                    Text(snapshot.docs[index]['name']),
-                  ],
-                ),
-                IconButton(onPressed: ()async{
-                  final uid = await getUserId();
-                  var FirebaseReference = FirebaseFirestore.instance
-                      .collection('Acedemy').doc(uid).collection(
-                      "student").doc(document).collection('studentsubject');
-                  await FirebaseReference.doc(_docid).delete();
-                }, icon: Icon(Icons.delete_forever_sharp,color: Colors.red,),),
+                  Row(
+                    children: [
+                      Text("Class name:  ",style: TextStyle(fontWeight: FontWeight.bold),),
+                      Text(snapshot.docs[index]['name']),
+                    ],
+                  ),
+                  IconButton(onPressed: ()async{
+                    final uid = await getUserId();
+                    var FirebaseReference = FirebaseFirestore.instance
+                        .collection('Acedemy').doc(uid).collection(
+                        "fees");
+                    await FirebaseReference.doc(_docid).delete();
+                  }, icon: Icon(Icons.delete_forever_sharp,color: Colors.red,),),
 
-              ],
-            ),
+                ],
+              ),
+              Text("Fees:  ${snapshot.docs[index]['fees']}")
+            ],
+          ),
         ),
       ),
     );
   }
 }
-
