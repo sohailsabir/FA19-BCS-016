@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:labfinal/admin/AddStudent.dart';
+import 'package:labfinal/admin/studentSubject.dart';
 class StudentPage extends StatelessWidget {
   const StudentPage({Key? key}) : super(key: key);
 
@@ -20,8 +22,17 @@ class StudentPage extends StatelessWidget {
           children: [
             TeacherRepeatContainer(
               title: "ADD STUDENTS",
-              onpressed: (){},
+              onpressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>AddStudent()));
+              },
               icon: Icons.add_outlined,
+            ),
+            TeacherRepeatContainer(
+              title: "Add Student Subject",
+              onpressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>StudentSubject()));
+              },
+              icon: Icons.subject_sharp,
             ),
             TeacherRepeatContainer(
               title: "STUDENT INFO",

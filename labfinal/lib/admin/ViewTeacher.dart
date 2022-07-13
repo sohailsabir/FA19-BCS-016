@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:labfinal/Authentication/firebaseAuthentication.dart';
 import 'package:labfinal/Component/Loading.dart';
+import 'package:labfinal/admin/UpdateTeacherRecord.dart';
 
 class ViewTeacher extends StatefulWidget {
   const ViewTeacher({Key? key}) : super(key: key);
@@ -27,6 +32,7 @@ class _ViewTeacherState extends State<ViewTeacher> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
         title: !searchSate
@@ -100,15 +106,30 @@ class _ViewTeacherState extends State<ViewTeacher> {
   }
 }
 
-class CustomCard extends StatelessWidget {
+class CustomCard extends StatefulWidget {
   CustomCard({required this.snapshot, required this.index});
 
   final QuerySnapshot snapshot;
   final int index;
 
   @override
+  State<CustomCard> createState() => _CustomCardState();
+}
+
+class _CustomCardState extends State<CustomCard> {
+
+
+
+  @override
   Widget build(BuildContext context) {
-    final docid = snapshot.docs[index].id;
+    final docid = widget.snapshot.docs[widget.index].id;
+    String urlimg=widget.snapshot.docs[widget.index]['img'];
+    TextEditingController tname= TextEditingController(text: widget.snapshot.docs[widget.index]['tname']);
+    TextEditingController temail= TextEditingController(text: widget.snapshot.docs[widget.index]['temail']);
+    TextEditingController tphone= TextEditingController(text: widget.snapshot.docs[widget.index]['tphone']);
+    TextEditingController tclass= TextEditingController(text: widget.snapshot.docs[widget.index]['tclass']);
+    TextEditingController tsubject=TextEditingController(text: widget.snapshot.docs[widget.index]['tsubject']);
+    TextEditingController tpass=TextEditingController(text: widget.snapshot.docs[widget.index]['pas']);
     return Container(
       margin: EdgeInsets.fromLTRB(15, 20, 15, 0),
       decoration: BoxDecoration(
@@ -155,8 +176,9 @@ class CustomCard extends StatelessWidget {
 
                       child: CircleAvatar(
                         radius: 55.0,
+                        backgroundColor: Colors.white,
                         backgroundImage: NetworkImage(
-                            snapshot.docs[index]['img']),
+                            widget.snapshot.docs[widget.index]['img']),
                       ),
                     ),
                     alignment: FractionalOffset(0.5, 0.0),
@@ -177,7 +199,7 @@ class CustomCard extends StatelessWidget {
                     Text("FULL NAME:  ", style: TextStyle(
                         fontSize: 16, fontWeight: FontWeight.bold),),
                     Text(
-                      snapshot.docs[index]['tname'].toString().toUpperCase(),),
+                      widget.snapshot.docs[widget.index]['tname'].toString().toUpperCase(),),
                   ],
                 ),
                 Row(
@@ -185,14 +207,14 @@ class CustomCard extends StatelessWidget {
                     Text("Email:  ", style: TextStyle(
                         fontSize: 16, fontWeight: FontWeight.bold),),
                     Text(
-                      snapshot.docs[index]['temail'].toString().toLowerCase(),),
+                      widget.snapshot.docs[widget.index]['temail'].toString().toLowerCase(),),
                   ],
                 ),
                 Row(
                   children: [
                     Text("PHONE NO:  ", style: TextStyle(
                         fontSize: 16, fontWeight: FontWeight.bold),),
-                    Text(snapshot.docs[index]['tphone']
+                    Text(widget.snapshot.docs[widget.index]['tphone']
                         .toString()
                         .toUpperCase()),
                   ],
@@ -201,7 +223,7 @@ class CustomCard extends StatelessWidget {
                   children: [
                     Text("Class:  ", style: TextStyle(
                         fontSize: 16, fontWeight: FontWeight.bold),),
-                    Text(snapshot.docs[index]['tclass']
+                    Text(widget.snapshot.docs[widget.index]['tclass']
                         .toString()
                         .toUpperCase()),
                   ],
@@ -210,7 +232,7 @@ class CustomCard extends StatelessWidget {
                   children: [
                     Text("SUBJECT:  ", style: TextStyle(
                         fontSize: 16, fontWeight: FontWeight.bold),),
-                    Text(snapshot.docs[index]['tsubject']
+                    Text(widget.snapshot.docs[widget.index]['tsubject']
                         .toString()
                         .toUpperCase()),
                   ],
@@ -219,7 +241,7 @@ class CustomCard extends StatelessWidget {
                   children: [
                     Text("PASSWORD:  ", style: TextStyle(
                         fontSize: 16, fontWeight: FontWeight.bold),),
-                    Text(snapshot.docs[index]['pas']),
+                    Text(widget.snapshot.docs[widget.index]['pas']),
                   ],
                 ),
 
@@ -231,7 +253,106 @@ class CustomCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async{
+                  await showDialog(context: context, builder: (BuildContext context){
+                    return AlertDialog(
+                      title: Text("Update Teacher Infomation"),
+                      content: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                controller: tname,
+                                decoration: InputDecoration(
+                                    icon: Icon(
+                                      Icons.person,
+                                      color: Colors.deepPurple,
+                                    )),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                controller: temail,
+                                decoration: InputDecoration(
+                                    icon: Icon(
+                                      Icons.email,
+                                      color: Colors.deepPurple,
+                                    )),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                controller: tphone,
+                                decoration: InputDecoration(
+                                    icon: Icon(
+                                      Icons.phone,
+                                      color: Colors.deepPurple,
+                                    )),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                controller: tpass,
+                                decoration: InputDecoration(
+                                    hintText: 'Password',
+                                    icon: Icon(
+                                      Icons.password,
+                                      color: Colors.deepPurple,
+                                    )),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                controller: tclass,
+                                decoration: InputDecoration(
+                                    hintText: 'class',
+                                    icon: Icon(
+                                      Icons.class__rounded,
+                                      color: Colors.deepPurple,
+                                    )),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                controller: tsubject,
+                                decoration: InputDecoration(
+                                  hintText: 'subject',
+                                    icon: Icon(
+                                      Icons.subject,
+                                      color: Colors.deepPurple,
+                                    )),
+                              ),
+                            ),
+
+                          ],
+                        ),
+                      ),
+                      actions: [
+                        TextButton(onPressed: (){Navigator.pop(context);}, child: Text("Cancel",style: TextStyle(color: Colors.red),),),
+                        TextButton(onPressed: ()async{
+                          final uid=await getUserId();
+                          if(tname.text.isNotEmpty&&tsubject.text.isNotEmpty&&tpass.text.isNotEmpty&&tclass.text.isNotEmpty&&tphone.text.isNotEmpty&&temail.text.isNotEmpty){
+                            FirebaseFirestore.instance.collection('Acedemy').doc(uid).collection('teacher').doc(docid).update({
+                              'tname':tname.text,
+                              'temail':temail.text,
+                              'tphone':temail.text,
+                              'tsubject':tsubject.text,
+                              'pas':tpass.text,
+                              'tclass':tclass.text
+                            }).then((value){
+                              Navigator.pop(context);
+                            });
+                          }
+                        }, child: Text("Update",style: TextStyle(color: Colors.deepPurple),),),
+                      ],
+                    );
+                  });
 
                 },
                 child: Text("EDIT"),
@@ -258,8 +379,8 @@ class CustomCard extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () async {
-                            final uid = await getUserId();
-
+                            print(urlimg);
+                           final uid = await getUserId();
                             Navigator.pop(context);
                             var FirebaseReference = FirebaseFirestore.instance
                                 .collection('Acedemy').doc(uid).collection(
@@ -291,23 +412,6 @@ class CustomCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  static void deleteFireBaseStorageItem(String fileUrl) {
-    String filePath = fileUrl
-        .replaceAll(new
-    RegExp(
-        r'https://firebasestorage.googleapis.com/v0/b/dial-in-2345.appspot.com/o/'),
-        '');
-
-    filePath = filePath.replaceAll(new RegExp(r'%2F'), '/');
-
-    filePath = filePath.replaceAll(new RegExp(r'(\?alt).*'), '');
-
-    var storageReferance = FirebaseStorage.instance.ref();
-
-    storageReferance.child(filePath).delete().then((_) =>
-        print('Successfully deleted $filePath storage item'));
   }
 }
 
