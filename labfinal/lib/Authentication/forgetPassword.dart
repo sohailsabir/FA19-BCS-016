@@ -76,14 +76,11 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       if(!_form.currentState!.validate()){
                         return;
                       }
-                      if(_form.currentState!.validate()){
-                        if(!_form.currentState!.validate()){
-                          return;
-                        }
                         if(_form.currentState!.validate()){
-                          verifyEmail();
+                           verifyEmail();
+                          print(_email.text);
                         }
-                      }
+
 
 
                     },

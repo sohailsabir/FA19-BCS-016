@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,7 +12,6 @@ import 'package:uuid/uuid.dart';
 
 class AddTeacher extends StatefulWidget {
   const AddTeacher({Key? key}) : super(key: key);
-
   @override
   _AddTeacherState createState() => _AddTeacherState();
 }
@@ -38,6 +38,8 @@ class _AddTeacherState extends State<AddTeacher> {
   final ImagePicker _picker = ImagePicker();
   File? pickimage;
   String? imageURL;
+  String? acedemy;
+
 
 
 
@@ -64,6 +66,17 @@ class _AddTeacherState extends State<AddTeacher> {
   Stream<QuerySnapshot> getSubjectData()async*{
     final uid=await getUserId();
     yield* FirebaseFirestore.instance.collection('Acedemy').doc(uid).collection('subjects').snapshots();
+  }
+  @override
+  void initState() {
+    getDoc();
+
+    super.initState();
+  }
+  getDoc() async{
+    FirebaseFirestore.instance.collection('Acedemy').doc(FirebaseAuth.instance.currentUser!.uid).collection('user').get().then((document) {
+    acedemy=document.docs[0]['acedemy'];
+    });
   }
 
   @override
@@ -539,7 +552,8 @@ class _AddTeacherState extends State<AddTeacher> {
                                     'tsubject':tsubject,
                                     'tclass':tclasses,
                                     'img':imageURL,
-                                    'pas':tpassword.text
+                                    'pas':tpassword.text,
+                                    'acedemy':acedemy
                                   });
                                     setState(() {
                                       isLoading=false;

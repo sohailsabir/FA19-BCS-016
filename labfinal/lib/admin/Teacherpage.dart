@@ -1,8 +1,30 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:labfinal/Authentication/firebaseAuthentication.dart';
+import 'package:labfinal/Component/Loading.dart';
+import 'package:labfinal/PDFFuction/pdfservices.dart';
 import 'package:labfinal/admin/ViewTeacher.dart';
 import 'package:labfinal/admin/add%20teacher.dart';
-class TeacherPage extends StatelessWidget {
-  const TeacherPage({Key? key}) : super(key: key);
+class TeacherPage extends StatefulWidget {
+  @override
+  State<TeacherPage> createState() => _TeacherPageState();
+}
+
+class _TeacherPageState extends State<TeacherPage> {
+  List Pdfdata = [];
+  bool loading=false;
+  final Pdfservices _pdfservices=Pdfservices();
+
+  getData() async {
+    final uid = await getUserId();
+    await FirebaseFirestore.instance.collection("Acedemy").doc(uid).collection("teacher").get().then((value) {
+      for(var i in value.docs) {
+        Pdfdata.add(i.data());
+
+
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +34,7 @@ class TeacherPage extends StatelessWidget {
         title: Text("Teacher"),
         backgroundColor: Colors.deepPurple,
       ),
-      body: Container(
+      body: loading?saveloading:Container(
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/bg.webp"),
@@ -34,6 +56,22 @@ class TeacherPage extends StatelessWidget {
                 Navigator.push(context, MaterialPageRoute(builder: (context)=>ViewTeacher()));
               },
               icon: Icons.info,
+            ),
+            TeacherRepeatContainer(
+              title: "PRINT TEACHER CONTACT",
+              onpressed: ()async{
+                await getData();
+                if(Pdfdata.isNotEmpty)
+                {
+
+                  final data=await _pdfservices.createPdf(Pdfdata);
+                  _pdfservices.saveAndLanchFile(data, "teachercontact.pdf");
+                  Pdfdata.clear();
+
+                }
+
+              },
+              icon: Icons.download_rounded,
             ),
           ],
         ),
@@ -73,6 +111,7 @@ class TeacherRepeatContainer extends StatelessWidget {
                 color: Colors.white,
               ),
               Text(title,
+                textAlign: TextAlign.center,
                 style: TextStyle(
                 color: Colors.white,
                 fontSize: 30,

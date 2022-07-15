@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:labfinal/Authentication/firebaseAuthentication.dart';
 import 'package:labfinal/Component/Loading.dart';
@@ -204,6 +205,10 @@ class _SignupState extends State<Signup> {
                           });
                           createAccount(AcedemyName.text, email.text.trim(), password.text).then((user){
                             if(user!=null){
+                              FirebaseFirestore.instance.collection("Acedemy").doc(user.uid).collection("user").add({
+                                'acedemy':AcedemyName.text,
+                                'phone':phonenumber.text,
+                              });
                               setState(() {
                                 isloading=false;
                                 const snackBar = SnackBar(
@@ -212,6 +217,7 @@ class _SignupState extends State<Signup> {
                                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                               });
+
                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Login()));
                             }
                             else{

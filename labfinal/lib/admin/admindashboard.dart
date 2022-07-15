@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:labfinal/admin/AdminNotification.dart';
 import 'package:labfinal/admin/ClassPage.dart';
 import 'package:labfinal/admin/Fees.dart';
 import 'package:labfinal/admin/StudentPage.dart';
 import 'package:labfinal/admin/SubjectPage.dart';
 import 'package:labfinal/admin/Teacherpage.dart';
-class AdminDashboard extends StatelessWidget {
+import 'package:labfinal/admin/printpage.dart';
+class AdminDashboard extends StatefulWidget {
 
 
+  @override
+  State<AdminDashboard> createState() => _AdminDashboardState();
+}
+
+class _AdminDashboardState extends State<AdminDashboard> {
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +24,9 @@ class AdminDashboard extends StatelessWidget {
         title: Text("Fee Management App"),
         actions: [
           IconButton(
-            onPressed: (){},
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>NoticationPage()));
+            },
             icon: Icon(Icons.notification_important_rounded),
             tooltip: 'Add Noticafication',
           ),
@@ -182,7 +191,9 @@ class AdminDashboard extends StatelessWidget {
                 ),),
                 Expanded(child: RepeatContainer(
                   title: "INFO",
-                  onpressed: (){},
+                  onpressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>PrintPage()));
+                  },
                 ),),
               ],
             ),
@@ -197,6 +208,7 @@ class RepeatContainer extends StatelessWidget {
   RepeatContainer({required this.onpressed,required this.title});
 
   String title;
+
   VoidCallback onpressed;
 
   @override

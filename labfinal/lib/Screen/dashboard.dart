@@ -1,6 +1,7 @@
 import 'package:animated_button/animated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:labfinal/Authentication/login.dart';
+import 'package:labfinal/aboutPage.dart';
 import 'package:labfinal/studentLogin.dart';
 import 'package:labfinal/teacherLogin.dart';
 
@@ -59,7 +60,7 @@ class Dashboard extends StatelessWidget {
             leading: Icon(Icons.person,color: Colors.deepPurple,),
             title: Text("Manager"),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
             },
           ),
           Divider(
@@ -70,7 +71,7 @@ class Dashboard extends StatelessWidget {
             leading: Icon(Icons.people_alt,color: Colors.deepPurple,),
             title: Text("Teacher"),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>TeacherLogin()));
             },
           ),
           Divider(
@@ -81,7 +82,7 @@ class Dashboard extends StatelessWidget {
             leading: Icon(Icons.people_alt,color: Colors.deepPurple,),
             title: Text("Student"),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>StudentLogin()));
             },
           ),
           Divider(
@@ -92,6 +93,8 @@ class Dashboard extends StatelessWidget {
             leading: Icon(Icons.info,color: Colors.deepPurple,),
             title: Text("About"),
             onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>Aboutpage()));
+
             },
           ),
           Divider(
@@ -103,32 +106,40 @@ class Dashboard extends StatelessWidget {
         ],
       ),
     ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ChoiceButton(
-            title: 'MANAGER',
-            icon: Icons.person,
-            onpressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
-            },
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/bg.webp'),
+            fit: BoxFit.fill,
           ),
-          ChoiceButton(
-            title: 'TEACHER',
-            icon: Icons.people_alt,
-            onpressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>TeacherLogin()));
-            },
-          ),
-          ChoiceButton(
-            title: 'STUDENT',
-            icon: Icons.people_alt,
-            onpressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>StudentLogin()));
-            },
-          ),
-        ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ChoiceButton(
+              title: 'MANAGER',
+              icon: Icons.person,
+              onpressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
+              },
+            ),
+            ChoiceButton(
+              title: 'TEACHER',
+              icon: Icons.people_alt,
+              onpressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>TeacherLogin()));
+              },
+            ),
+            ChoiceButton(
+              title: 'STUDENT',
+              icon: Icons.people_alt,
+              onpressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>StudentLogin()));
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

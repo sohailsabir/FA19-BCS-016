@@ -324,7 +324,7 @@ class _AddStudentState extends State<AddStudent> {
                   },
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    hintText: "Enter Teacher Phone no",
+                    hintText: "Enter Student Phone no",
                     hintStyle: TextStyle(color: Colors.grey),
                     prefixIcon: Icon(
                       Icons.phone,
@@ -358,7 +358,7 @@ class _AddStudentState extends State<AddStudent> {
                   },
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
-                    hintText: "Genrate Teacher Password",
+                    hintText: "Genrate Student Password",
                     hintStyle: TextStyle(color: Colors.grey),
                     prefixIcon: Icon(
                       Icons.password,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:labfinal/admin/AddClass.dart';
 import 'package:labfinal/admin/AddFees.dart';
 import 'package:labfinal/admin/ViewClass.dart';
+import 'package:labfinal/admin/ViewFees.dart';
 class FeesPage extends StatelessWidget {
   const FeesPage({Key? key}) : super(key: key);
 
@@ -32,7 +33,7 @@ class FeesPage extends StatelessWidget {
             TeacherRepeatContainer(
               title: "Fees INFO",
               onpressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>ViewClass()));
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ViewFees()));
               },
               icon: Icons.info,
             ),
