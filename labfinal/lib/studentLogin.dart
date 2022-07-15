@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:labfinal/Authentication/Signup.dart';
 import 'package:labfinal/User/UserStudentPage.dart';
@@ -11,6 +12,9 @@ class StudentLogin extends StatefulWidget {
 
 class _StudentLoginState extends State<StudentLogin> {
   bool passvisibility = true;
+  TextEditingController aName=TextEditingController();
+  TextEditingController password=TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +55,7 @@ class _StudentLoginState extends State<StudentLogin> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: TextField(
+                  controller: aName,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     hintText: "Enter Acedemy name",
@@ -76,6 +81,7 @@ class _StudentLoginState extends State<StudentLogin> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: TextField(
+                  controller: password,
                   keyboardType: TextInputType.visiblePassword,
                   obscureText: passvisibility,
                   decoration: InputDecoration(
@@ -113,8 +119,42 @@ class _StudentLoginState extends State<StudentLogin> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>UserStudentPage()));
+                  onPressed: () async{
+                    var dcuid=null;
+                    var data;
+
+
+
+                    if(aName.text.isNotEmpty&&password.text.isNotEmpty){
+                      await FirebaseFirestore.instance
+                          .collection('student')
+                          .where('acedemy', isEqualTo: aName.text).where('password',isEqualTo: password.text)
+                          .get().then((value){
+                            data=value;
+                            setState(() {
+                              dcuid = data.docs[0].id; //because the query returns a list of docs, even if the result is 1 document. You need to access it using index[0].
+                            });
+                      } ).catchError((error){
+                        const snackBar = SnackBar(
+                          content: Text('Invalid Password '),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                      });
+
+                      print(dcuid);
+                      if(dcuid!=null)
+                        {
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>UserStudentPage(StudentID: dcuid,)));
+                        }
+                    }
+                    else{
+                      const snackBar = SnackBar(
+                        content: Text('Please fill all data'),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }
+
                   },
                   child: Text(
                     "Login",

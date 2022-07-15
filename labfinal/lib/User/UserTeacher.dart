@@ -2,20 +2,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:labfinal/User/Notification.dart';
-import 'package:labfinal/admin/View%20Notification.dart';
-import 'package:labfinal/usernotification.dart';
+
 
 import '../Component/Loading.dart';
 
-class UserStudentPage extends StatefulWidget {
-  UserStudentPage({required this.StudentID});
+class UserTeacherPage extends StatefulWidget {
+  UserTeacherPage({required this.StudentID});
   final String StudentID;
 
   @override
-  _UserStudentPageState createState() => _UserStudentPageState();
+  _UserTeacherPageState createState() => _UserTeacherPageState();
 }
 
-class _UserStudentPageState extends State<UserStudentPage> {
+class _UserTeacherPageState extends State<UserTeacherPage> {
   // String name="";
   // String img="";
   // String fees="";
@@ -48,7 +47,7 @@ class _UserStudentPageState extends State<UserStudentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Student Mode"),
+        title: Text("Teacher Mode"),
         backgroundColor: Colors.deepPurple,
         actions: [
           IconButton(
@@ -60,154 +59,154 @@ class _UserStudentPageState extends State<UserStudentPage> {
         ],
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('student').doc(widget.StudentID).snapshots(),
-        builder: ( context,AsyncSnapshot snapshot) {
-          if (!snapshot.hasData)
+          stream: FirebaseFirestore.instance.collection('teacher').doc(widget.StudentID).snapshots(),
+          builder: ( context,AsyncSnapshot snapshot) {
+            if (!snapshot.hasData)
             {
               return Center(
                 child: saveloading,
               );
 
             }
-          else{
-            var document=snapshot.data;
-            return Container(
-              margin: EdgeInsets.fromLTRB(15, 20, 15, 0),
-              decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                    bottomLeft: Radius.circular(10),
-                    bottomRight: Radius.circular(10)
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3), // changes position of shadow
+            else{
+              var document=snapshot.data;
+              return Container(
+                margin: EdgeInsets.fromLTRB(15, 20, 15, 0),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10)
                   ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  Container(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Container(
 
-                    child: Stack(
-                      children: [
-                        Container(
-                          height: 120.0,
-                          decoration: BoxDecoration(
-                            color: Colors.deepPurple,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                                bottomLeft: Radius.circular(10),
-                                bottomRight: Radius.circular(10)
-                            ),
-                          ),
-                        ),
-                        FractionalTranslation(
-                          translation: Offset(0.0, 0.4),
-                          child: Align(
-                            child: CircleAvatar(
-                              radius: 60.0,
-                              backgroundColor: Colors.grey,
-
-                              child: CircleAvatar(
-                                radius: 55.0,
-                                backgroundColor: Colors.white,
-                                backgroundImage: NetworkImage(
-                                    document['img']),
+                      child: Stack(
+                        children: [
+                          Container(
+                            height: 120.0,
+                            decoration: BoxDecoration(
+                              color: Colors.deepPurple,
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                  bottomLeft: Radius.circular(10),
+                                  bottomRight: Radius.circular(10)
                               ),
                             ),
-                            alignment: FractionalOffset(0.5, 0.0),
                           ),
-                        ),
-                      ],
+                          FractionalTranslation(
+                            translation: Offset(0.0, 0.4),
+                            child: Align(
+                              child: CircleAvatar(
+                                radius: 60.0,
+                                backgroundColor: Colors.grey,
+
+                                child: CircleAvatar(
+                                  radius: 55.0,
+                                  backgroundColor: Colors.white,
+                                  backgroundImage: NetworkImage(
+                                      document['img']),
+                                ),
+                              ),
+                              alignment: FractionalOffset(0.5, 0.0),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 60,
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                    child: Column(
-
-                      children: [
-                        Row(
-                          children: [
-                            Text("FULL NAME:  ", style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),),
-                            Text(
-                              document['name'].toString().toUpperCase(),style: TextStyle(fontSize: 18),),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        Row(
-                          children: [
-                            Text("PHONE:  ", style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),),
-                            Text(
-                              document['phone'].toString().toLowerCase(),style: TextStyle(fontSize: 18),),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        Row(
-                          children: [
-                            Text("CLASS:  ", style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),),
-                            Text(document['class']
-                                .toString()
-                                .toUpperCase(),style: TextStyle(fontSize: 18),),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        Row(
-                          children: [
-                            Text("FEES:  ", style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),),
-                            Text(document['fees']
-                                .toString()
-                                .toUpperCase(),style: TextStyle(fontSize: 18),),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        Row(
-                          children: [
-                            Text("PASSWORD:  ", style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),),
-                            Text(document['password']
-                                .toString()
-                                .toUpperCase(),style: TextStyle(fontSize: 18),),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 50,
-                        ),
-
-
-                      ],
+                    SizedBox(
+                      height: 60,
                     ),
-                  ),
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                      child: Column(
+
+                        children: [
+                          Row(
+                            children: [
+                              Text("FULL NAME:  ", style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),),
+                              Text(
+                                document['tname'].toString().toUpperCase(),style: TextStyle(fontSize: 18),),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          Row(
+                            children: [
+                              Text("PHONE:  ", style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),),
+                              Text(
+                                document['tphone'].toString().toLowerCase(),style: TextStyle(fontSize: 18),),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          Row(
+                            children: [
+                              Text("CLASS:  ", style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),),
+                              Text(document['tclass']
+                                  .toString()
+                                  .toUpperCase(),style: TextStyle(fontSize: 18),),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          Row(
+                            children: [
+                              Text("Subject:  ", style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),),
+                              Text(document['tsubject']
+                                  .toString()
+                                  .toUpperCase(),style: TextStyle(fontSize: 18),),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          Row(
+                            children: [
+                              Text("PASSWORD:  ", style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),),
+                              Text(document['pas']
+                                  .toString()
+                                  ,style: TextStyle(fontSize: 18),),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 50,
+                          ),
 
 
-                ],
-              ),
-            );
+                        ],
+                      ),
+                    ),
 
-          }
+
+                  ],
+                ),
+              );
 
             }
+
+          }
 
 
       ),

@@ -555,6 +555,16 @@ class _AddTeacherState extends State<AddTeacher> {
                                     'pas':tpassword.text,
                                     'acedemy':acedemy
                                   });
+                                FirebaseFirestore.instance.collection('teacher').add({
+                                  'tname':tname.text,
+                                  'temail':temail.text,
+                                  'tphone':tphone.text,
+                                  'tsubject':tsubject,
+                                  'tclass':tclasses,
+                                  'img':imageURL,
+                                  'pas':tpassword.text,
+                                  'acedemy':acedemy
+                                });
                                     setState(() {
                                       isLoading=false;
                                       pickimage=null;

@@ -448,6 +448,16 @@ class _AddStudentState extends State<AddStudent> {
                               'teacher':'',
                               'fees':fees,
                             });
+                            FirebaseFirestore.instance.collection('student').add({
+                              'name':sname.text,
+                              'class':sclasses,
+                              'phone':sphone.text,
+                              'password':spassword.text,
+                              'img':imageURL,
+                              'acedemy':acedemy,
+                              'teacher':'',
+                              'fees':fees,
+                            });
 
                             setState(() {
                               isLoading=false;
