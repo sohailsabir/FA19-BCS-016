@@ -1,7 +1,6 @@
 # labfinal
 
-![Screenshot_20220715-214316](https://user-images.githubusercontent.com/88321261/179271345-5437891d-2978-4b2b-97c9-7e02ec84df40.jpg)
-![Screenshot_20220715-214326_Drive](https://user-images.githubusercontent.com/88321261/179271365-3f3bffc0-55ef-4174-aa6c-aa415f8f7406.jpg)
+![Screenshot_20220715-214316](https://user-images.githubusercontent.com/88321261/179271345-5437891d-2978-4b2b-97c9-7e02ec84df40.jpg)![Screenshot_20220715-214326_Drive](https://user-images.githubusercontent.com/88321261/179271365-3f3bffc0-55ef-4174-aa6c-aa415f8f7406.jpg)
 ![Screenshot_20220715-214335](https://user-images.githubusercontent.com/88321261/179271372-253ed6fe-a5a2-4e9a-b09a-85f561f57ea7.jpg)
 ![Screenshot_20220715-214347_Drive](https://user-images.githubusercontent.com/88321261/179271385-7b79f92e-a663-4c8e-a15a-850c8567c995.jpg)
 ![Screenshot_20220715-214400_Drive](https://user-images.githubusercontent.com/88321261/179271390-88df04ee-9d54-4ee0-a952-6a84996de531.jpg)
