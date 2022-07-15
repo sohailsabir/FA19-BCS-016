@@ -2,7 +2,7 @@
     package="com.example.labfinal">
    <application
         android:requestLegacyExternalStorage="true"
-        android:label="labfinal"
+        android:label="Acedemy App"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

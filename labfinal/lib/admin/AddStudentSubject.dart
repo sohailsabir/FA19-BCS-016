@@ -161,11 +161,6 @@ class _AddStudentSubjectState extends State<AddStudentSubject> {
                             'teacher':teacher,
 
                           });
-                        FirebaseFirestore.instance.collection('student').doc(widget.docid).collection('studentsubject').add({
-                          'name':ssubject,
-                          'teacher':teacher,
-
-                        });
                           setState(() {
                             isLoading=false;
                             ssubject=null;
