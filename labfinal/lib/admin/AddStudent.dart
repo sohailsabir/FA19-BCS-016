@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -23,6 +24,8 @@ class _AddStudentState extends State<AddStudent> {
   TextEditingController spassword =  TextEditingController();
   bool isLoading=false;
   var sclasses;
+  String? acedemy;
+  String? fees;
 
 
   final _formkey = GlobalKey<FormState>();
@@ -37,7 +40,12 @@ class _AddStudentState extends State<AddStudent> {
   final ImagePicker _picker = ImagePicker();
   File? pickimage;
   String? imageURL;
+  @override
+  void initState() {
+    getDoc();
 
+    super.initState();
+  }
 
 
 
@@ -64,6 +72,18 @@ class _AddStudentState extends State<AddStudent> {
   Stream<QuerySnapshot> getSubjectData()async*{
     final uid=await getUserId();
     yield* FirebaseFirestore.instance.collection('Acedemy').doc(uid).collection('subjects').snapshots();
+  }
+
+  getDoc() async{
+    FirebaseFirestore.instance.collection('Acedemy').doc(FirebaseAuth.instance.currentUser!.uid).collection('user').get().then((document) {
+      acedemy=document.docs[0]['acedemy'];
+    });
+  }
+  loadFees() async{
+    FirebaseFirestore.instance.collection('Acedemy').doc(FirebaseAuth.instance.currentUser!.uid).collection('fees').where("name",isEqualTo: sclasses).get().then((document) {
+      fees=document.docs[0]['fees'];
+    });
+    print("***************${fees}*********");
   }
   @override
   Widget build(BuildContext context) {
@@ -293,6 +313,7 @@ class _AddStudentState extends State<AddStudent> {
                               items: classname, onChanged: (classes){
                               setState(() {
                                 sclasses=classes;
+                                loadFees();
                               });
                             },
                               value: sclasses,
@@ -408,8 +429,10 @@ class _AddStudentState extends State<AddStudent> {
                         }
                         if(_formkey.currentState!.validate()){
                           if(sclasses!=null&&pickimage!=null){
+                            loadFees();
                             setState(() {
                               isLoading=true;
+
                             });
                             final uid=await getUserId();
                             UploadTask uploadtask=FirebaseStorage.instance.ref().child('studentimage').child(Uuid().v1()).putFile(pickimage!);
@@ -420,7 +443,10 @@ class _AddStudentState extends State<AddStudent> {
                               'class':sclasses,
                               'phone':sphone.text,
                               'password':spassword.text,
-                              'img':imageURL
+                              'img':imageURL,
+                              'acedemy':acedemy,
+                              'teacher':'',
+                              'fees':fees,
                             });
 
                             setState(() {

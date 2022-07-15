@@ -111,7 +111,7 @@ class CustomCard extends StatelessWidget {
     final docid=snapshot.docs[index].id;
     return GestureDetector(
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>AddStudentSubject(docid: docid)));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>AddStudentSubject(docid: docid,StudentClass: snapshot.docs[index]['class'],)));
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),

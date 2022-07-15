@@ -1,6 +1,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:labfinal/Screen/dashboard.dart';
 
 Future<User?>createAccount(String name,String email, String password)async{
   FirebaseAuth _auth=FirebaseAuth.instance;
@@ -38,15 +39,15 @@ Future<User?>Loginuser(String email, String password)async{
     return null;
   }
 }
-// Future logout(BuildContext context)async{
-//   FirebaseAuth _auth=FirebaseAuth.instance;
-//   try{
-//     await _auth.signOut();
-//     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginPage()));
-//   }catch(e){
-//     print(e);
-//   }
-// }
+Future logout(BuildContext context)async{
+  FirebaseAuth _auth=FirebaseAuth.instance;
+  try{
+    await _auth.signOut();
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Dashboard()));
+  }catch(e){
+    print(e);
+  }
+}
 Future<String>getUserId()async{
   FirebaseAuth _auth=FirebaseAuth.instance;
   return await(_auth.currentUser!.uid);

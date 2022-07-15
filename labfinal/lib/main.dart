@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:labfinal/Authentication/Signup.dart';
+import 'package:labfinal/CheckUser.dart';
 import 'package:labfinal/admin/AddClass.dart';
 import 'package:labfinal/admin/AddSubject.dart';
 import 'package:labfinal/admin/ClassPage.dart';
@@ -46,7 +47,7 @@ Future<void> main() async {
   );
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: Dashboard(),
+    home: CheckUser(),
   ));
 }
 

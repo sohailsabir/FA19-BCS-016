@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:labfinal/Authentication/firebaseAuthentication.dart';
+import 'package:labfinal/admin/AddClass.dart';
+import 'package:labfinal/admin/AddFees.dart';
+import 'package:labfinal/admin/AddStudent.dart';
+import 'package:labfinal/admin/AddSubject.dart';
 import 'package:labfinal/admin/AdminNotification.dart';
 import 'package:labfinal/admin/ClassPage.dart';
 import 'package:labfinal/admin/Fees.dart';
 import 'package:labfinal/admin/StudentPage.dart';
 import 'package:labfinal/admin/SubjectPage.dart';
 import 'package:labfinal/admin/Teacherpage.dart';
+import 'package:labfinal/admin/add%20teacher.dart';
 import 'package:labfinal/admin/printpage.dart';
 class AdminDashboard extends StatefulWidget {
 
@@ -74,7 +80,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
               leading: Icon(Icons.add_outlined,color: Colors.deepPurple,),
               title: Text("Add Teacher"),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>AddTeacher()));
               },
             ),
             Divider(
@@ -85,7 +91,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
               leading: Icon(Icons.add_outlined,color: Colors.deepPurple,),
               title: Text("Add Student"),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>AddStudent()));
               },
             ),
             Divider(
@@ -96,7 +102,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
               leading: Icon(Icons.add_outlined,color: Colors.deepPurple,),
               title: Text("Add Classes"),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>AddClass()));
               },
             ),
             Divider(
@@ -107,6 +113,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
               leading: Icon(Icons.add_outlined,color: Colors.deepPurple,),
               title: Text("Add Subject"),
               onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>AddSubject()));
               },
             ),
             Divider(
@@ -117,6 +124,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
               leading: Icon(Icons.monetization_on,color: Colors.deepPurple,),
               title: Text("Fees"),
               onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>AddFees()));
               },
             ),
             Divider(
@@ -127,6 +135,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
               leading: Icon(Icons.logout,color: Colors.deepPurple,),
               title: Text("Logout"),
               onTap: () {
+                logout(context);
               },
             ),
             Divider(

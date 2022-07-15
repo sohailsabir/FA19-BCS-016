@@ -4,8 +4,9 @@ import 'package:labfinal/Authentication/firebaseAuthentication.dart';
 import 'package:labfinal/Component/Loading.dart';
 
 class AddStudentSubject extends StatefulWidget {
-   AddStudentSubject({required this.docid});
+   AddStudentSubject({required this.docid,required this.StudentClass});
    final String docid;
+   final String StudentClass;
 
   @override
   _AddStudentSubjectState createState() => _AddStudentSubjectState();
@@ -25,6 +26,12 @@ class _AddStudentSubjectState extends State<AddStudentSubject> {
         .doc(uid)
         .collection('student').doc(widget.docid).collection('studentsubject')
         .snapshots();
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(widget.StudentClass);
   }
   @override
   Widget build(BuildContext context) {
