@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:labfinal/Authentication/Signup.dart';
+import 'package:labfinal/User/UserStudentPage.dart';
 
 class StudentLogin extends StatefulWidget {
   const StudentLogin({Key? key}) : super(key: key);
@@ -112,7 +113,9 @@ class _StudentLoginState extends State<StudentLogin> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>UserStudentPage()));
+                  },
                   child: Text(
                     "Login",
                     style: TextStyle(

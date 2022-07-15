@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:labfinal/Authentication/firebaseAuthentication.dart';
 import 'package:labfinal/Component/Loading.dart';
@@ -18,6 +19,7 @@ class _AddStudentSubjectState extends State<AddStudentSubject> {
     yield* FirebaseFirestore.instance.collection('Acedemy').doc(uid).collection('subjects').snapshots();
   }
   var ssubject;
+  var teacher="Not available";
   bool isLoading=false;
   Stream<QuerySnapshot> getUserData() async* {
     final uid = await getUserId();
@@ -32,6 +34,12 @@ class _AddStudentSubjectState extends State<AddStudentSubject> {
     // TODO: implement initState
     super.initState();
     print(widget.StudentClass);
+  }
+  loadTeacher() async{
+    FirebaseFirestore.instance.collection('Acedemy').doc(FirebaseAuth.instance.currentUser!.uid).collection('teacher').where("tsubject",isEqualTo: ssubject).where("tclass",isEqualTo: widget.StudentClass).get().then((document) {
+      teacher=document.docs[0]['tname'];
+    });
+    print("***************${teacher}*********");
   }
   @override
   Widget build(BuildContext context) {
@@ -103,6 +111,7 @@ class _AddStudentSubjectState extends State<AddStudentSubject> {
                           items: subjectname, onChanged: (subject){
                           setState(() {
                             ssubject=subject;
+                            loadTeacher();
                           });
                         },
                           value: ssubject,
@@ -143,19 +152,25 @@ class _AddStudentSubjectState extends State<AddStudentSubject> {
                   onPressed: () async{
                       if(ssubject!=null){
                         setState(() {
+                          loadTeacher();
                           isLoading=true;
                         });
-                        final uid=await getUserId();
-                        FirebaseFirestore.instance.collection("Acedemy").doc(uid).collection('student').doc(widget.docid).collection('studentsubject').add({
-                          'name':ssubject,
+                          final uid=await getUserId();
+                          FirebaseFirestore.instance.collection("Acedemy").doc(uid).collection('student').doc(widget.docid).collection('studentsubject').add({
+                            'name':ssubject,
+                            'teacher':teacher,
 
-                        });
+                          });
+                          setState(() {
+                            isLoading=false;
+                            ssubject=null;
 
-                        setState(() {
-                          isLoading=false;
-                          ssubject=null;
+                          });
 
-                        });
+
+
+
+
 
                       }
                       else{
@@ -225,10 +240,20 @@ class StudentCustomeCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
 
-                Row(
+                Column(
                   children: [
-                    Text("Subject name:  ",style: TextStyle(fontWeight: FontWeight.bold),),
-                    Text(snapshot.docs[index]['name']),
+                    Row(
+                      children: [
+                        Text("Subject name:  ",style: TextStyle(fontWeight: FontWeight.bold),),
+                        Text(snapshot.docs[index]['name']),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text("Teacher name:  ",style: TextStyle(fontWeight: FontWeight.bold),),
+                        Text(snapshot.docs[index]['teacher']),
+                      ],
+                    ),
                   ],
                 ),
                 IconButton(onPressed: ()async{

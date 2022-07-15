@@ -429,7 +429,7 @@ class _AddStudentState extends State<AddStudent> {
                         }
                         if(_formkey.currentState!.validate()){
                           if(sclasses!=null&&pickimage!=null){
-                            loadFees();
+                            await loadFees();
                             setState(() {
                               isLoading=true;
 

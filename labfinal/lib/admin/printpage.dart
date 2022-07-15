@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:labfinal/Authentication/firebaseAuthentication.dart';
+import 'package:labfinal/PDFFuction/All%20Studentpdf.dart';
+import 'package:labfinal/PDFFuction/StudentContact.dart';
+import 'package:labfinal/PDFFuction/pdfTeacher.dart';
 import 'package:labfinal/admin/ClassPage.dart';
 import 'package:labfinal/admin/Fees.dart';
 import 'package:labfinal/admin/StudentPage.dart';
@@ -15,10 +18,37 @@ class PrintPage extends StatefulWidget {
 
 class _PrintPageState extends State<PrintPage> {
   List Pdfdata = [];
+  List StudentPdfdata = [];
+  List TeacherPdfdata = [];
+
 
   bool loading=false;
 
   final Pdfservices _pdfservices=Pdfservices();
+  final PdfservicesAllStudent _pdfservicesAllStudent=PdfservicesAllStudent();
+  final PdfTeacherservices _pdfTeacherservices=PdfTeacherservices();
+
+  getTeacherData() async {
+    final uid = await getUserId();
+    await FirebaseFirestore.instance.collection("Acedemy").doc(uid).collection("teacher").get().then((value) {
+      for(var i in value.docs) {
+        TeacherPdfdata.add(i.data());
+
+
+      }
+    });
+  }
+
+  getStudentData() async {
+    final uid = await getUserId();
+    await FirebaseFirestore.instance.collection("Acedemy").doc(uid).collection("student").get().then((value) {
+      for(var i in value.docs) {
+        StudentPdfdata.add(i.data());
+
+
+      }
+    });
+  }
 
   getData() async {
     final uid = await getUserId();
@@ -67,6 +97,78 @@ class _PrintPageState extends State<PrintPage> {
                       _pdfservices.saveAndLanchFile(data, "teachercontact.pdf");
                       Pdfdata.clear();
 
+                    }
+                    else{
+                      const snackBar = SnackBar(
+                        content: Text('Data not available'),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                    }
+
+                  },
+                ),),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(child: RepeatContainer(
+                  title: "Print Student Contact",
+                  icon: Icons.download_rounded,
+                  onpressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>StudentContact()));
+
+
+                  },
+                ),),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(child: RepeatContainer(
+                  title: "Print All Students Info",
+                  icon: Icons.download_rounded,
+                  onpressed: ()async{
+                    await getStudentData();
+                    if(StudentPdfdata.isNotEmpty)
+                    {
+
+                      final data=await _pdfservicesAllStudent.createPdf(StudentPdfdata);
+                      _pdfservicesAllStudent.saveAndLanchFile(data, "Students.pdf");
+                      StudentPdfdata.clear();
+
+                    }
+                   else{
+                      const snackBar = SnackBar(
+                        content: Text('Data not available'),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }
+
+                  },
+                ),),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(child: RepeatContainer(
+                  title: "Print All Teacher Info",
+                  icon: Icons.download_rounded,
+                  onpressed: ()async{
+                    await getTeacherData();
+                    if(TeacherPdfdata.isNotEmpty)
+                    {
+
+                      final data=await _pdfTeacherservices.createPdf(TeacherPdfdata);
+                      _pdfTeacherservices.saveAndLanchFile(data, "Teachers.pdf");
+                      TeacherPdfdata.clear();
+
+                    }
+                    else{
+                      const snackBar = SnackBar(
+                        content: Text('Data not available'),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
 
                   },

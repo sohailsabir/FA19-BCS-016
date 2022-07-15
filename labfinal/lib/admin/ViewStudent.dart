@@ -9,23 +9,25 @@ import 'package:labfinal/Authentication/firebaseAuthentication.dart';
 import 'package:labfinal/Component/Loading.dart';
 import 'package:labfinal/admin/UpdateTeacherRecord.dart';
 
-class ViewTeacher extends StatefulWidget {
-  const ViewTeacher({Key? key}) : super(key: key);
+import 'ViewStudentSubject.dart';
+
+class ViewStudent extends StatefulWidget {
+  const ViewStudent({Key? key}) : super(key: key);
 
   @override
-  _ViewTeacherState createState() => _ViewTeacherState();
+  _ViewStudentState createState() => _ViewStudentState();
 }
 
-class _ViewTeacherState extends State<ViewTeacher> {
+class _ViewStudentState extends State<ViewStudent> {
   bool searchSate = false;
-  String tname = "";
+  String sname = "";
 
   Stream<QuerySnapshot> getUserData() async* {
     final uid = await getUserId();
     yield* FirebaseFirestore.instance
         .collection('Acedemy')
         .doc(uid)
-        .collection('teacher')
+        .collection('student')
         .snapshots();
   }
 
@@ -36,40 +38,40 @@ class _ViewTeacherState extends State<ViewTeacher> {
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
         title: !searchSate
-            ? Text("View Teacher")
+            ? Text("View Student")
             : TextField(
-                cursorColor: Colors.white,
-                autofocus: true,
-                style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white)),
-                  hintText: "Search here...",
-                  hintStyle: TextStyle(color: Colors.white),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    tname = value;
-                  });
-                },
-              ),
+          cursorColor: Colors.white,
+          autofocus: true,
+          style: TextStyle(color: Colors.white),
+          decoration: InputDecoration(
+            focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white)),
+            hintText: "Search here...",
+            hintStyle: TextStyle(color: Colors.white),
+          ),
+          onChanged: (value) {
+            setState(() {
+              sname = value;
+            });
+          },
+        ),
         actions: [
           !searchSate
               ? IconButton(
-                  onPressed: () {
-                    setState(() {
-                      searchSate = !searchSate;
-                    });
-                  },
-                  icon: Icon(Icons.search),
-                )
+            onPressed: () {
+              setState(() {
+                searchSate = !searchSate;
+              });
+            },
+            icon: Icon(Icons.search),
+          )
               : IconButton(
-                  onPressed: () {
-                    setState(() {
-                      searchSate = !searchSate;
-                    });
-                  },
-                  icon: Icon(Icons.cancel)),
+              onPressed: () {
+                setState(() {
+                  searchSate = !searchSate;
+                });
+              },
+              icon: Icon(Icons.cancel)),
         ],
       ),
       body: StreamBuilder(
@@ -82,16 +84,16 @@ class _ViewTeacherState extends State<ViewTeacher> {
           return ListView.builder(
               itemCount: snapshot.data.docs.length,
               itemBuilder: (context, int index) {
-                if (tname.isEmpty) {
+                if (sname.isEmpty) {
                   return CustomCard(
                     index: index,
                     snapshot: snapshot.data,
                   );
                 }
-                if (snapshot.data.docs[index]['tname']
+                if (snapshot.data.docs[index]['name']
                     .toString()
                     .toLowerCase()
-                    .startsWith(tname.toLowerCase())) {
+                    .startsWith(sname.toLowerCase())) {
                   return CustomCard(
                     index: index,
                     snapshot: snapshot.data,
@@ -122,12 +124,11 @@ class _CustomCardState extends State<CustomCard> {
   Widget build(BuildContext context) {
     final docid = widget.snapshot.docs[widget.index].id;
     String urlimg=widget.snapshot.docs[widget.index]['img'];
-    TextEditingController tname= TextEditingController(text: widget.snapshot.docs[widget.index]['tname']);
-    TextEditingController temail= TextEditingController(text: widget.snapshot.docs[widget.index]['temail']);
-    TextEditingController tphone= TextEditingController(text: widget.snapshot.docs[widget.index]['tphone']);
-    TextEditingController tclass= TextEditingController(text: widget.snapshot.docs[widget.index]['tclass']);
-    TextEditingController tsubject=TextEditingController(text: widget.snapshot.docs[widget.index]['tsubject']);
-    TextEditingController tpass=TextEditingController(text: widget.snapshot.docs[widget.index]['pas']);
+    TextEditingController name= TextEditingController(text: widget.snapshot.docs[widget.index]['name']);
+    TextEditingController phone= TextEditingController(text: widget.snapshot.docs[widget.index]['phone']);
+    TextEditingController fees= TextEditingController(text: widget.snapshot.docs[widget.index]['fees']);
+    TextEditingController password=TextEditingController(text: widget.snapshot.docs[widget.index]['password']);
+    TextEditingController sclass=TextEditingController(text: widget.snapshot.docs[widget.index]['class']);
     return Container(
       margin: EdgeInsets.fromLTRB(15, 20, 15, 0),
       decoration: BoxDecoration(
@@ -197,40 +198,31 @@ class _CustomCardState extends State<CustomCard> {
                     Text("FULL NAME:  ", style: TextStyle(
                         fontSize: 16, fontWeight: FontWeight.bold),),
                     Text(
-                      widget.snapshot.docs[widget.index]['tname'].toString().toUpperCase(),),
+                      widget.snapshot.docs[widget.index]['name'].toString().toUpperCase(),),
                   ],
                 ),
                 Row(
                   children: [
-                    Text("Email:  ", style: TextStyle(
+                    Text("PHONE:  ", style: TextStyle(
                         fontSize: 16, fontWeight: FontWeight.bold),),
                     Text(
-                      widget.snapshot.docs[widget.index]['temail'].toString().toLowerCase(),),
+                      widget.snapshot.docs[widget.index]['phone'].toString().toLowerCase(),),
                   ],
                 ),
                 Row(
                   children: [
-                    Text("PHONE NO:  ", style: TextStyle(
+                    Text("CLASS:  ", style: TextStyle(
                         fontSize: 16, fontWeight: FontWeight.bold),),
-                    Text(widget.snapshot.docs[widget.index]['tphone']
+                    Text(widget.snapshot.docs[widget.index]['class']
                         .toString()
                         .toUpperCase()),
                   ],
                 ),
                 Row(
                   children: [
-                    Text("Class:  ", style: TextStyle(
+                    Text("FEES:  ", style: TextStyle(
                         fontSize: 16, fontWeight: FontWeight.bold),),
-                    Text(widget.snapshot.docs[widget.index]['tclass']
-                        .toString()
-                        .toUpperCase()),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text("SUBJECT:  ", style: TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold),),
-                    Text(widget.snapshot.docs[widget.index]['tsubject']
+                    Text(widget.snapshot.docs[widget.index]['fees']
                         .toString()
                         .toUpperCase()),
                   ],
@@ -239,10 +231,11 @@ class _CustomCardState extends State<CustomCard> {
                   children: [
                     Text("PASSWORD:  ", style: TextStyle(
                         fontSize: 16, fontWeight: FontWeight.bold),),
-                    Text(widget.snapshot.docs[widget.index]['pas']),
+                    Text(widget.snapshot.docs[widget.index]['password']
+                        .toString()
+                        .toUpperCase()),
                   ],
                 ),
-
 
               ],
             ),
@@ -251,17 +244,25 @@ class _CustomCardState extends State<CustomCard> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.deepPurple,
+                ),
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>ViewStudentSubject(studentid: docid,Studentname: widget.snapshot.docs[widget.index]['name'],)));
+                }, child: Text("View Subject"),),
+              SizedBox(width: 20,),
+              ElevatedButton(
                 onPressed: () async{
                   await showDialog(context: context, builder: (BuildContext context){
                     return AlertDialog(
-                      title: Text("Update Teacher Infomation"),
+                      title: Text("Update Student Infomation"),
                       content: SingleChildScrollView(
                         child: Column(
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TextFormField(
-                                controller: tname,
+                                controller: name,
                                 decoration: InputDecoration(
                                     icon: Icon(
                                       Icons.person,
@@ -272,18 +273,7 @@ class _CustomCardState extends State<CustomCard> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TextFormField(
-                                controller: temail,
-                                decoration: InputDecoration(
-                                    icon: Icon(
-                                      Icons.email,
-                                      color: Colors.deepPurple,
-                                    )),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: TextFormField(
-                                controller: tphone,
+                                controller: phone,
                                 decoration: InputDecoration(
                                     icon: Icon(
                                       Icons.phone,
@@ -294,7 +284,18 @@ class _CustomCardState extends State<CustomCard> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TextFormField(
-                                controller: tpass,
+                                controller: fees,
+                                decoration: InputDecoration(
+                                    icon: Icon(
+                                      Icons.phone,
+                                      color: Colors.deepPurple,
+                                    )),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                controller: password,
                                 decoration: InputDecoration(
                                     hintText: 'Password',
                                     icon: Icon(
@@ -306,23 +307,11 @@ class _CustomCardState extends State<CustomCard> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TextFormField(
-                                controller: tclass,
+                                controller: sclass,
                                 decoration: InputDecoration(
                                     hintText: 'class',
                                     icon: Icon(
                                       Icons.class__rounded,
-                                      color: Colors.deepPurple,
-                                    )),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: TextFormField(
-                                controller: tsubject,
-                                decoration: InputDecoration(
-                                  hintText: 'subject',
-                                    icon: Icon(
-                                      Icons.subject,
                                       color: Colors.deepPurple,
                                     )),
                               ),
@@ -335,14 +324,13 @@ class _CustomCardState extends State<CustomCard> {
                         TextButton(onPressed: (){Navigator.pop(context);}, child: Text("Cancel",style: TextStyle(color: Colors.red),),),
                         TextButton(onPressed: ()async{
                           final uid=await getUserId();
-                          if(tname.text.isNotEmpty&&tsubject.text.isNotEmpty&&tpass.text.isNotEmpty&&tclass.text.isNotEmpty&&tphone.text.isNotEmpty&&temail.text.isNotEmpty){
-                            FirebaseFirestore.instance.collection('Acedemy').doc(uid).collection('teacher').doc(docid).update({
-                              'tname':tname.text,
-                              'temail':temail.text,
-                              'tphone':tphone.text,
-                              'tsubject':tsubject.text,
-                              'pas':tpass.text,
-                              'tclass':tclass.text
+                          if(name.text.isNotEmpty&&password.text.isNotEmpty&&sclass.text.isNotEmpty&&phone.text.isNotEmpty&&fees.text.isNotEmpty){
+                            FirebaseFirestore.instance.collection('Acedemy').doc(uid).collection('student').doc(docid).update({
+                              'name':name.text,
+                              'phone':phone.text,
+                              'fees':fees.text,
+                              'password':password.text,
+                              'class':sclass.text
                             }).then((value){
                               Navigator.pop(context);
                             });
@@ -378,11 +366,11 @@ class _CustomCardState extends State<CustomCard> {
                         TextButton(
                           onPressed: () async {
                             print(urlimg);
-                           final uid = await getUserId();
+                            final uid = await getUserId();
                             Navigator.pop(context);
                             var FirebaseReference = FirebaseFirestore.instance
                                 .collection('Acedemy').doc(uid).collection(
-                                "teacher");
+                                "student");
                             await FirebaseReference.doc(docid).delete();
 
                           },
