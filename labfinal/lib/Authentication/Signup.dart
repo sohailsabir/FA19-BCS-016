@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:email_auth/email_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:labfinal/Authentication/firebaseAuthentication.dart';
+import 'package:labfinal/Authentication/otppage.dart';
 import 'package:labfinal/Component/Loading.dart';
 import 'package:labfinal/admin/admindashboard.dart';
 import 'package:labfinal/Authentication/login.dart';
@@ -13,6 +15,13 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  EmailAuth emailAuth =  new EmailAuth(sessionName: "Fee Management");
+  void sendOtp(String email) async {
+    bool result = await emailAuth.sendOtp(
+        recipientMail: email.trim(), otpLength: 5
+    );
+    print(result);
+  }
   TextEditingController AcedemyName=new TextEditingController();
   TextEditingController email=new TextEditingController();
   TextEditingController phonenumber=new TextEditingController();
@@ -22,14 +31,14 @@ class _SignupState extends State<Signup> {
     bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(e);
     return emailValid;
   }
-  bool isloading=false;
+
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: isloading?Center(child: saveloading,):SingleChildScrollView(
+        child:SingleChildScrollView(
           child: Container(
             height: 950,
             decoration: BoxDecoration(
@@ -199,39 +208,12 @@ class _SignupState extends State<Signup> {
                           return;
                         }
                         if(_form.currentState!.validate()){
-                          setState(() {
-                            isloading=true;
+                         sendOtp(email.text);
+                         Navigator.push(context, MaterialPageRoute(builder: (context)=>OTPVerification(pakAcedemy: AcedemyName.text,email: email.text.trim(),password: password.text,phone: phonenumber.text,)));
 
-                          });
-                          createAccount(AcedemyName.text, email.text.trim(), password.text).then((user){
-                            if(user!=null){
-                              FirebaseFirestore.instance.collection("Acedemy").doc(user.uid).collection("user").add({
-                                'acedemy':AcedemyName.text,
-                                'phone':phonenumber.text,
-                              });
-                              setState(() {
-                                isloading=false;
-                                const snackBar = SnackBar(
-                                  content: Text('Create Account Successfully'),
-                                );
-                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-                              });
-
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Login()));
-                            }
-                            else{
-                              setState(() {
-                                isloading=false;
-                              });
-                              const snackBar = SnackBar(
-                                content: Text('Failed to create Account'),
-                              );
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-                            }
-                          });
                         }
+
+
                       },
                       child: Text(
                         "Register Now",
